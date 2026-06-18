@@ -2,456 +2,1579 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>窍某汽车网 | JDM改装·多平台赛车游戏完整调校库</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>窍谋汽车游戏网 | 科幻霓虹</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Microsoft YaHei", system-ui, sans-serif;
+        /* ===== 全局样式 ===== */
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Microsoft YaHei',sans-serif}
+        html{scroll-behavior:smooth}
+        body{
+            color:#eee;
+            overflow-x:hidden;
+            will-change:scroll-position;
+            transition:background 0.5s ease, color 0.4s ease, background-image 0.5s ease;
         }
-        :root {
-            --neon-cyan: #00f0ff;
-            --neon-purple: #9d00ff;
-            --neon-red: #ff2d55;
-            --dark-bg: #05070e;
-            --card-bg: rgba(15, 18, 30, 0.85);
-            --glass-border: rgba(0, 240, 255, 0.25);
-            --text-light: #eef6ff;
-            --text-gray: #b0c4de;
+        /* ===== 霓虹主题（默认） ===== */
+        body.theme-neon{
+            background:#050512;
+            color:#eee;
+            background-image:radial-gradient(#101030 1px,transparent 1px);
+            background-size:25px 25px;
         }
-        body {
-            background-color: var(--dark-bg);
-            background-image: radial-gradient(circle at 15% 10%, rgba(0, 240, 255, 0.08) 0%, transparent 45%),
-            radial-gradient(circle at 85% 75%, rgba(157, 0, 255, 0.07) 0%, transparent 45%);
-            color: var(--text-light);
-            line-height: 1.8;
-            position: relative;
-            overflow-x: hidden;
+        body.theme-neon .box{
+            background:#0b0620cc;
+            border-color:#7722ff66;
+            box-shadow:0 0 12px #5500ff33;
         }
-        /* 点击波纹特效样式 */
-        .click-ripple {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(0, 240, 255, 0.35);
-            transform: scale(0);
-            pointer-events: none;
-            animation: rippleAnim 0.6s ease-out forwards;
+        body.theme-neon .title{color:#0ff;text-shadow:0 0 6px #0ff5;}
+        body.theme-neon .sub-title{color:#cc99ff;}
+        body.theme-neon p{color:#dde;}
+        body.theme-neon .spec-card{background:#0f0a2a;border-left-color:#0ff;}
+        body.theme-neon .car-desc-list{background:#0f0a2a;border-left-color:#0cf;}
+        body.theme-neon .img-item{background:linear-gradient(145deg,#1a1040,#2a1a55);border-color:#00ccff77;color:#aef;}
+        body.theme-neon .video-box{background:#0e082b;border-color:#ff228877;color:#ff99cc;}
+        body.theme-neon .converter-tool{background:#0f0a2a;border-color:#5500ff44;}
+        body.theme-neon .search-zone-input{background:#090522;color:#0cf;border-color:#0cf;}
+        body.theme-neon .search-zone-input:focus{border-color:#0ff;box-shadow:0 0 25px #0ff6;}
+        body.theme-neon .search-result-item{background:#1a0e42;border-color:#0cf6;color:#0cf;}
+        body.theme-neon .example-tag{background:#0a0520;border-color:#0ff6;color:#0ff;}
+        body.theme-neon .example-tag:hover{background:#1a0e42;border-color:#0ff;}
+        body.theme-neon .nav-wrapper{background:#090522;border-bottom-color:#8800ff77;}
+        body.theme-neon .nav-toggle{background:#0a0520;color:#0cf;}
+        body.theme-neon .side-toc{background:rgba(5,5,18,0.7);border-color:#0ff3;}
+        body.theme-neon .side-toc a{background:#446688;border-color:#0ff6;}
+        body.theme-neon .side-toc a.active{background:#0ff;box-shadow:0 0 12px #0ff;}
+        body.theme-neon .top-btn{background:#0ff4;border-color:#0ff;color:#0ff;}
+        body.theme-neon .progress-ring .progress{stroke:#0ff;}
+        body.theme-neon .progress-ring .bg{stroke:#334;}
+        body.theme-neon header, body.theme-neon footer{background:linear-gradient(90deg,#0a0428,#220646,#0a0428);}
+        body.theme-neon .lang-select-wrap select{background:#090522;color:#0ff;border-color:#0ff;}
+        body.theme-neon nav a{color:#0cf;}
+        body.theme-neon nav a:hover{background:#1a0e42;border-color:#0ff;}
+        body.theme-neon .official-url{border-color:#0cf;color:#0cf;}
+        body.theme-neon .official-url:hover{background:#0cf2;}
+        body.theme-neon .like-btn{background:#1a0e42;border-color:#0ff6;color:#0cf;}
+        body.theme-neon .like-btn.liked{color:#ff6;border-color:#f80;background:#2a1a42;}
+        body.theme-neon .link a{color:#0cf;}
+        body.theme-neon .compare-toggle{background:#1a0e42;border-color:#0cf;color:#0cf;}
+        body.theme-neon .compare-panel{background:#0a0618;border-color:#0ff6;}
+        body.theme-neon .compare-panel .compare-col{background:#120c2a;}
+        body.theme-neon .compare-panel .compare-col h4{color:#0ff;}
+        body.theme-neon .spec-card .spec-item .label{color:#88aacc;}
+        body.theme-neon .spec-card .spec-item .value{color:#0ff;}
+        body.theme-neon .hot-badge{background:#f80;color:#000;}
+        body.theme-neon .search-stats{color:#88aacc;}
+
+        /* ===== 黑色主题 ===== */
+        body.theme-dark{
+            background:#0a0a0a;
+            color:#ccc;
+            background-image:none;
         }
-        @keyframes rippleAnim {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
+        body.theme-dark .box{
+            background:#141414cc;
+            border-color:#444;
+            box-shadow:0 0 12px #222;
         }
-        /* 霓虹发光通用卡片 */
-        .tech-card {
-            background: var(--card-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 14px;
-            padding: 26px;
-            backdrop-filter: blur(8px);
-            transition: all 0.35s ease;
-            position: relative;
-            overflow: hidden;
+        body.theme-dark .title{color:#0ff;text-shadow:0 0 6px #0ff3;}
+        body.theme-dark .sub-title{color:#88ccff;}
+        body.theme-dark p{color:#bbb;}
+        body.theme-dark .spec-card{background:#1a1a1a;border-left-color:#0ff;}
+        body.theme-dark .car-desc-list{background:#1a1a1a;border-left-color:#0cf;}
+        body.theme-dark .img-item{background:linear-gradient(145deg,#222,#333);border-color:#555;color:#aaa;}
+        body.theme-dark .video-box{background:#1a1a1a;border-color:#ff446688;color:#ff99cc;}
+        body.theme-dark .converter-tool{background:#1a1a1a;border-color:#444;}
+        body.theme-dark .search-zone-input{background:#1a1a1a;color:#0cf;border-color:#555;}
+        body.theme-dark .search-zone-input:focus{border-color:#0ff;box-shadow:0 0 25px #0ff3;}
+        body.theme-dark .search-result-item{background:#222;border-color:#555;color:#0cf;}
+        body.theme-dark .example-tag{background:#1a1a1a;border-color:#555;color:#0cf;}
+        body.theme-dark .example-tag:hover{background:#2a2a2a;border-color:#0ff;}
+        body.theme-dark .nav-wrapper{background:#111;border-bottom-color:#333;}
+        body.theme-dark .nav-toggle{background:#1a1a1a;color:#0cf;}
+        body.theme-dark .side-toc{background:rgba(20,20,20,0.8);border-color:#333;}
+        body.theme-dark .side-toc a{background:#444;border-color:#555;}
+        body.theme-dark .side-toc a.active{background:#0ff;box-shadow:0 0 12px #0ff;}
+        body.theme-dark .top-btn{background:#0ff3;border-color:#0ff;color:#0ff;}
+        body.theme-dark .progress-ring .progress{stroke:#0ff;}
+        body.theme-dark .progress-ring .bg{stroke:#333;}
+        body.theme-dark header, body.theme-dark footer{background:linear-gradient(90deg,#0a0a0a,#1a1a1a,#0a0a0a);}
+        body.theme-dark .lang-select-wrap select{background:#1a1a1a;color:#0ff;border-color:#444;}
+        body.theme-dark nav a{color:#0cf;}
+        body.theme-dark nav a:hover{background:#2a2a2a;border-color:#0ff;}
+        body.theme-dark .official-url{border-color:#555;color:#0cf;}
+        body.theme-dark .official-url:hover{background:#0cf1;}
+        body.theme-dark .like-btn{background:#1a1a1a;border-color:#444;color:#0cf;}
+        body.theme-dark .like-btn.liked{color:#ff6;border-color:#f80;background:#2a1a1a;}
+        body.theme-dark .link a{color:#0cf;}
+        body.theme-dark .compare-toggle{background:#1a1a1a;border-color:#555;color:#0cf;}
+        body.theme-dark .compare-panel{background:#111;border-color:#444;}
+        body.theme-dark .compare-panel .compare-col{background:#1a1a1a;}
+        body.theme-dark .compare-panel .compare-col h4{color:#0ff;}
+        body.theme-dark .spec-card .spec-item .label{color:#888;}
+        body.theme-dark .spec-card .spec-item .value{color:#0ff;}
+        body.theme-dark .hot-badge{background:#f80;color:#000;}
+        body.theme-dark .search-stats{color:#888;}
+
+        /* ===== 白色主题 ===== */
+        body.theme-white{
+            background:#f5f5f0;
+            color:#222;
+            background-image:none;
         }
-        .tech-card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0,240,255,0.18), transparent);
-            transition: left 0.5s;
+        body.theme-white .box{
+            background:#ffffffcc;
+            border-color:#ccc;
+            box-shadow:0 0 12px rgba(0,0,0,0.08);
         }
-        .tech-card:hover::before {
-            left: 100%;
+        body.theme-white .title{color:#0a5a8a;text-shadow:none;border-left-color:#0a5a8a;}
+        body.theme-white .sub-title{color:#2a6a9a;}
+        body.theme-white p{color:#333;}
+        body.theme-white .spec-card{background:#f0f0ec;border-left-color:#0a5a8a;}
+        body.theme-white .car-desc-list{background:#f0f0ec;border-left-color:#0a5a8a;}
+        body.theme-white .car-desc-list .car-item .name{color:#0a5a8a;}
+        body.theme-white .car-desc-list .car-item .desc{color:#555;}
+        body.theme-white .img-item{background:linear-gradient(145deg,#e8e8e4,#d8d8d4);border-color:#aaa;color:#444;}
+        body.theme-white .img-item .placeholder-text{background:rgba(255,255,255,0.7);color:#222;}
+        body.theme-white .video-box{background:#e8e8e4;border-color:#cc884488;color:#666;}
+        body.theme-white .converter-tool{background:#f0f0ec;border-color:#ccc;}
+        body.theme-white .converter-tool .input-group{background:#e8e8e4;}
+        body.theme-white .converter-tool input{color:#222;}
+        body.theme-white .converter-tool select{background:#fff;color:#222;border-color:#aaa;}
+        body.theme-white .converter-tool .result{color:#0a5a8a;}
+        body.theme-white .search-zone-input{background:#fff;color:#222;border-color:#aaa;}
+        body.theme-white .search-zone-input:focus{border-color:#0a5a8a;box-shadow:0 0 20px rgba(10,90,138,0.2);}
+        body.theme-white .search-result-item{background:#e8f0f8;border-color:#aac;color:#0a5a8a;}
+        body.theme-white .example-tag{background:#e8e8e4;border-color:#aaa;color:#333;}
+        body.theme-white .example-tag:hover{background:#d0d8e0;border-color:#0a5a8a;}
+        body.theme-white .nav-wrapper{background:#fff;border-bottom-color:#ccc;}
+        body.theme-white .nav-toggle{background:#f0f0ec;color:#0a5a8a;}
+        body.theme-white .nav-toggle:hover{background:#e0e8ec;}
+        body.theme-white .side-toc{background:rgba(255,255,255,0.8);border-color:#ccc;}
+        body.theme-white .side-toc a{background:#bbb;border-color:#aaa;}
+        body.theme-white .side-toc a.active{background:#0a5a8a;box-shadow:0 0 12px rgba(10,90,138,0.4);}
+        body.theme-white .side-toc .toc-label{background:#fff;color:#0a5a8a;border-color:#0a5a8a;}
+        body.theme-white .top-btn{background:rgba(10,90,138,0.15);border-color:#0a5a8a;color:#0a5a8a;}
+        body.theme-white .top-btn:hover{background:rgba(10,90,138,0.3);}
+        body.theme-white .progress-ring .progress{stroke:#0a5a8a;}
+        body.theme-white .progress-ring .bg{stroke:#ccc;}
+        body.theme-white header, body.theme-white footer{background:linear-gradient(90deg,#e8ecf0,#d0d8e0,#e8ecf0);color:#0a5a8a;box-shadow:0 0 15px rgba(0,0,0,0.1);}
+        body.theme-white .lang-select-wrap select{background:#fff;color:#222;border-color:#aaa;}
+        body.theme-white nav a{color:#0a5a8a;}
+        body.theme-white nav a:hover{background:#e0e8ec;border-color:#0a5a8a;box-shadow:0 0 8px rgba(10,90,138,0.2);}
+        body.theme-white .official-url{border-color:#aaa;color:#0a5a8a;}
+        body.theme-white .official-url:hover{background:rgba(10,90,138,0.08);}
+        body.theme-white .like-btn{background:#e8e8e4;border-color:#aaa;color:#0a5a8a;}
+        body.theme-white .like-btn:hover{background:#d0d8e0;}
+        body.theme-white .like-btn.liked{color:#e06020;border-color:#e06020;background:#f0e8e0;}
+        body.theme-white .link a{color:#0a5a8a;}
+        body.theme-white .compare-toggle{background:#e8e8e4;border-color:#aaa;color:#0a5a8a;}
+        body.theme-white .compare-toggle.active{background:rgba(10,90,138,0.1);border-color:#0a5a8a;}
+        body.theme-white .compare-panel{background:#f5f5f0;border-color:#ccc;}
+        body.theme-white .compare-panel .compare-col{background:#fff;}
+        body.theme-white .compare-panel .compare-col h4{color:#0a5a8a;}
+        body.theme-white .spec-card .spec-item .label{color:#666;}
+        body.theme-white .spec-card .spec-item .value{color:#0a5a8a;}
+        body.theme-white .hot-badge{background:#e06020;color:#fff;}
+        body.theme-white .search-stats{color:#666;}
+        body.theme-white ul{color:#333;}
+        body.theme-white .title .like-btn .like-count{color:#666;}
+        body.theme-white .title .like-btn .global-like-info{color:#666;}
+
+        /* ===== 通用样式（不随主题变化） ===== */
+        #glow{
+            position:fixed;
+            width:180px;height:180px;
+            background:radial-gradient(circle,rgba(100,200,255,0.25),transparent 70%);
+            border-radius:50%;
+            pointer-events:none;
+            transform:translate(-50%,-50%);
+            z-index:999;
+            mix-blend-mode:screen;
+            display:none;
+            will-change:transform,left,top;
         }
-        .tech-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 0 25px rgba(0, 240, 255, 0.35), 0 0 45px rgba(157, 0, 255, 0.18);
-            border-color: var(--neon-cyan);
+        body.theme-white #glow{display:none !important;}
+
+        /* 主题切换按钮 */
+        .theme-toggle-wrap{
+            display:inline-flex;
+            align-items:center;
+            gap:6px;
+        }
+        #themeToggle{
+            padding:6px 14px;
+            background:rgba(0,255,255,0.12);
+            border:1px solid #0ff6;
+            border-radius:20px;
+            color:#0ff;
+            font-size:14px;
+            cursor:pointer;
+            transition:all 0.3s;
+            backdrop-filter:blur(4px);
+        }
+        #themeToggle:hover{
+            background:rgba(0,255,255,0.25);
+            box-shadow:0 0 15px #0ff4;
+        }
+        body.theme-white #themeToggle{
+            background:rgba(10,90,138,0.08);
+            border-color:#0a5a8a88;
+            color:#0a5a8a;
+        }
+        body.theme-white #themeToggle:hover{
+            background:rgba(10,90,138,0.18);
+        }
+        body.theme-dark #themeToggle{
+            background:rgba(255,255,255,0.08);
+            border-color:#666;
+            color:#0cf;
+        }
+        body.theme-dark #themeToggle:hover{
+            background:rgba(255,255,255,0.15);
         }
 
-        /* 导航栏 */
-        header {
-            width: 100%;
-            background: rgba(8, 10, 18, 0.92);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--glass-border);
-            position: sticky;
-            top: 0;
-            z-index: 999;
-            padding: 16px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        /* 其余样式与之前保持一致 */
+        header{
+            padding:22px 20px 12px;
+            text-align:center;
+            font-size:clamp(1.2rem,5vw,2rem);
+            font-weight:bold;
+            letter-spacing:3px;
+            position:relative;
+            z-index:20;
+            transition:background 0.5s ease, color 0.4s ease, box-shadow 0.4s ease;
         }
-        .logo {
-            font-size: 28px;
-            font-weight: bold;
-            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
-            -webkit-background-clip: text;
-            color: transparent;
-            letter-spacing: 1px;
+        .top-bar{
+            display:flex;
+            flex-wrap:wrap;
+            align-items:center;
+            justify-content:center;
+            gap:12px 20px;
+            margin-top:8px;
         }
-        .nav-box a {
-            color: var(--text-gray);
-            text-decoration: none;
-            margin-left: 26px;
-            font-size: 16px;
-            padding: 6px 10px;
-            border-radius: 6px;
-            transition: 0.25s;
-        }
-        .nav-box a:hover {
-            color: var(--neon-cyan);
-            box-shadow: 0 0 12px rgba(0,240,255,0.3);
-        }
-        @media(max-width:768px){
-            header {
-                flex-direction: column;
-                gap:14px;
-            }
-            .nav-box {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap:8px;
-            }
-            .nav-box a {
-                margin: 0 !important;
-            }
-        }
-
-        /* 首屏横幅 */
-        .hero {
-            min-height: 72vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 0 20px;
-        }
-        .hero h1 {
-            font-size: 48px;
-            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
-            -webkit-background-clip: text;
-            color: transparent;
-            margin-bottom: 18px;
-        }
-        .hero p {
-            max-width: 800px;
-            font-size: 20px;
-            color: var(--text-gray);
-        }
-
-        /* 通用容器 */
-        .container {
-            width: 93%;
-            max-width: 1280px;
-            margin: 80px auto;
-        }
-        .sec-title {
-            text-align: center;
-            font-size: 32px;
-            margin-bottom: 50px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid var(--neon-cyan);
-            display: inline-block;
-            position: relative;
-            left: 50%;
-            transform: translateX(-50%);
-            color: var(--neon-cyan);
-        }
-
-        /* 网格布局 */
-        .grid-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 34px;
-        }
-        .tech-card h3 {
-            font-size: 22px;
-            margin-bottom: 14px;
-            color: var(--neon-cyan);
-        }
-        .tech-card p {
-            color: var(--text-gray);
-            font-size: 16px;
-        }
-        .tag-red {
-            display: inline-block;
-            padding: 3px 9px;
-            background: rgba(255,45,85,0.15);
-            border:1px solid var(--neon-red);
-            color: var(--neon-red);
+        .lang-select-wrap select{
+            padding:6px 14px;
             border-radius:4px;
-            font-size:13px;
-            margin:4px 2px;
+            font-size:15px;
+            outline:none;
+            cursor:pointer;
+            transition:all 0.3s;
         }
-        .tag-cyan {
-            display: inline-block;
-            padding: 3px 9px;
-            background: rgba(0,240,255,0.15);
-            border:1px solid var(--neon-cyan);
-            color: var(--neon-cyan);
-            border-radius:4px;
-            font-size:13px;
-            margin:4px 2px;
+        .nav-wrapper{
+            position:sticky;
+            top:0;
+            z-index:30;
+            transition:transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), background 0.4s ease, border-color 0.4s ease;
+            will-change:transform;
+            contain:layout;
         }
-
-        /* 大文本区块 */
-        .big-text-block {
-            padding: 32px;
+        .nav-wrapper.hide-nav{transform:translateY(-100%)}
+        .nav-toggle{
+            display:block;
+            text-align:center;
+            padding:6px 0;
+            cursor:pointer;
+            border-bottom:1px solid #4400aa66;
+            font-size:18px;
+            letter-spacing:2px;
+            user-select:none;
+            transition:background 0.3s, color 0.3s;
         }
-        .big-text-block p {
-            margin-bottom: 16px;
+        .nav-toggle:hover{background:#1a0e42}
+        body.theme-white .nav-toggle:hover{background:#e0e8ec;}
+        body.theme-dark .nav-toggle:hover{background:#2a2a2a;}
+        nav{
+            padding:12px 6px;
+            text-align:center;
+            display:flex;
+            flex-wrap:wrap;
+            justify-content:center;
+            gap:6px 4px;
+            transition:max-height 0.35s ease, opacity 0.25s ease, padding 0.25s ease;
+            max-height:500px;
+            overflow:hidden;
+            opacity:1;
         }
-
-        /* 邮箱链接样式 */
-        .mail-link {
-            display: inline-block;
-            margin-top:12px;
-            padding:10px 22px;
-            border:1px solid var(--neon-cyan);
-            border-radius:8px;
-            color:var(--neon-cyan);
+        nav.collapsed{max-height:0;opacity:0;padding:0 6px;}
+        nav a{
             text-decoration:none;
-            transition:0.3s;
+            font-size:clamp(12px,1.2vw,15px);
+            padding:4px 10px;
+            border-radius:4px;
+            border:1px solid transparent;
+            transition:all 0.2s;
+            white-space:nowrap;
         }
-        .mail-link:hover {
-            background:rgba(0,240,255,0.15);
-            box-shadow:0 0 15px rgba(0,240,255,0.3);
+        .side-toc{
+            position:fixed;right:12px;top:50%;transform:translateY(-50%);z-index:50;
+            display:flex;flex-direction:column;gap:8px;
+            backdrop-filter:blur(4px);
+            padding:10px 6px;border-radius:20px;
+            box-shadow:0 0 15px rgba(0,0,0,0.2);
+            max-height:70vh;overflow-y:auto;
+            will-change:transform;
+            transition:background 0.4s, border-color 0.4s;
         }
-
-        /* 页脚 */
-        footer {
-            margin-top: 100px;
-            padding: 45px 20px;
-            text-align: center;
-            border-top: 1px solid var(--glass-border);
-            background: rgba(5,7,14,0.9);
+        .side-toc a{
+            display:block;width:12px;height:12px;border-radius:50%;
+            transition:background 0.25s, transform 0.25s, box-shadow 0.25s;
+            text-indent:-999px;overflow:hidden;position:relative;
         }
-        footer p {
-            color: #7889a3;
+        .side-toc .toc-label{display:none;position:absolute;right:20px;top:50%;transform:translateY(-50%);
+            padding:2px 8px;border-radius:4px;font-size:12px;border:1px solid;white-space:nowrap;}
+        .side-toc a:hover .toc-label{display:block}
+        .progress-ring{
+            position:fixed;right:16px;bottom:80px;width:54px;height:54px;z-index:45;pointer-events:none;
+            will-change:transform;
+        }
+        .progress-ring svg{transform:rotate(-90deg);}
+        .progress-ring .bg{fill:none;stroke-width:4}
+        .progress-ring .progress{fill:none;stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset 0.15s}
+        .top-btn{
+            position:fixed;right:20px;bottom:30px;width:48px;height:48px;
+            font-size:22px;border-radius:50%;
+            cursor:pointer;z-index:40;
+            opacity:0;transition:opacity 0.3s, background 0.3s, border-color 0.3s, color 0.3s;
+            pointer-events:none;
+            will-change:opacity;
+        }
+        .top-btn.show{opacity:1;pointer-events:auto}
+        .box{
+            width:92%;max-width:1200px;margin:25px auto;
+            padding:18px 16px;border-radius:8px;
+            position:relative;overflow:hidden;cursor:default;
+            animation:fadeUp 0.5s ease both;animation-delay:0.05s;
+            will-change:transform,opacity;
+            contain:layout style;
+            transition:background 0.4s, border-color 0.4s, box-shadow 0.4s;
+        }
+        @keyframes fadeUp{0%{opacity:0;transform:translateY(15px)}100%{opacity:1;transform:translateY(0)}}
+        .title{
+            font-size:clamp(1.1rem,3vw,1.6rem);
+            border-left:5px solid;padding-left:10px;margin-bottom:12px;
+            display:flex;justify-content:space-between;align-items:center;
+            flex-wrap:wrap;
+            transition:color 0.3s, text-shadow 0.3s, border-color 0.3s;
+        }
+        .title .like-btn{
+            font-size:0.8rem;border-radius:20px;
+            padding:2px 12px;cursor:pointer;transition:all 0.2s;
+            display:flex;align-items:center;gap:6px;
+        }
+        .like-count{font-size:0.8rem;}
+        .global-like-info{font-size:12px;margin-left:10px;}
+        .hot-badge{padding:0 8px;border-radius:10px;font-weight:bold;}
+        .sub-title{
+            font-size:clamp(1rem,2.2vw,1.3rem);
+            margin:14px 0 8px;
+            transition:color 0.3s;
+        }
+        .img-box{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0;}
+        .img-item{
+            flex:1 1 80px;min-width:70px;max-width:160px;height:100px;
+            display:flex;align-items:center;justify-content:center;
+            font-size:12px;padding:4px;text-align:center;
+            box-shadow:inset 0 0 8px rgba(0,136,255,0.27);
+            transition:border-color 0.2s, box-shadow 0.2s, transform 0.2s, background 0.4s;
+            cursor:pointer;border-radius:6px;
+            background-size:cover;background-position:center;
+            position:relative;overflow:hidden;
+        }
+        .img-item .placeholder-text{
+            padding:4px 8px;border-radius:4px;backdrop-filter:blur(2px);font-weight:bold;
+        }
+        .img-item:hover{border-color:#0ff;box-shadow:0 0 10px #0ff7;transform:scale(1.02)}
+        .car-desc-list{
+            display:grid;grid-template-columns:1fr 1fr;gap:6px 20px;
+            border-radius:8px;padding:10px 14px;margin:6px 0 12px;
+            border-left:3px solid;
+            transition:background 0.4s, border-color 0.4s;
+        }
+        .car-desc-list .car-item{display:flex;justify-content:space-between;border-bottom:1px dotted #446;padding:3px 0;font-size:13px;}
+        .car-desc-list .car-item .name{font-weight:bold;}
+        .video-box{
+            width:100%;height:180px;
+            display:flex;align-items:center;justify-content:center;margin:15px 0;
+            cursor:pointer;border-radius:8px;
+            transition:background 0.4s, border-color 0.4s, color 0.4s;
+        }
+        p{line-height:1.7;margin:8px 0;text-indent:2em;transition:color 0.3s;}
+        ul{margin:10px 0 10px 30px;transition:color 0.3s;}
+        .link a,.official-url{text-shadow:0 0 4px;word-break:break-all;transition:color 0.3s;}
+        .official-url{display:inline-block;margin:6px 0 12px;padding:4px 12px;border-radius:4px;text-decoration:none;transition:all 0.3s;}
+        .spec-card{
+            border-radius:10px;padding:12px 16px;margin:12px 0;
+            border-left:4px solid;
+            display:grid;grid-template-columns:1fr 1fr;gap:6px 20px;
+            transition:background 0.4s, border-color 0.4s;
+        }
+        .spec-card .spec-item{display:flex;justify-content:space-between;border-bottom:1px dotted #446;padding:4px 0;}
+        .spec-card .spec-item .label{transition:color 0.3s;}
+        .spec-card .spec-item .value{font-weight:bold;transition:color 0.3s;}
+        .compare-toggle{
+            padding:4px 12px;border-radius:12px;cursor:pointer;font-size:13px;transition:all 0.3s;
+        }
+        .compare-panel{display:none;margin-top:10px;border-radius:8px;padding:12px;border:1px dashed;transition:all 0.3s;}
+        .compare-panel.show{display:block}
+        .compare-panel .compare-row{display:flex;gap:20px;flex-wrap:wrap;}
+        .compare-panel .compare-col{flex:1;min-width:150px;padding:8px 12px;border-radius:6px;transition:background 0.3s;}
+        .compare-panel .compare-col h4{margin-bottom:6px;transition:color 0.3s;}
+        .compare-panel .compare-col .param{display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid #223;}
+        .converter-tool{
+            border-radius:10px;padding:16px;margin-top:15px;
+            display:flex;flex-wrap:wrap;gap:15px;align-items:center;
+            transition:background 0.4s, border-color 0.4s;
+        }
+        .converter-tool .input-group{display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:20px;transition:background 0.3s;}
+        .converter-tool input{background:transparent;border:none;width:80px;font-size:16px;outline:none;transition:color 0.3s;}
+        .converter-tool select{background:transparent;border:1px solid;border-radius:4px;padding:4px 6px;transition:all 0.3s;}
+        .converter-tool .result{font-weight:bold;margin-left:10px;transition:color 0.3s;}
+        footer{
+            text-align:center;padding:15px;margin-top:40px;
+            transition:background 0.5s, color 0.4s, box-shadow 0.4s;
+        }
+        .tw,.en{display:none}
+        .modal-overlay{
+            position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:9999;
+            display:none;align-items:center;justify-content:center;backdrop-filter:blur(3px);
+        }
+        .modal-overlay.active{display:flex}
+        .modal-content{
+            max-width:90vw;max-height:90vh;background:#0b0620;border:2px solid #0ff;
+            border-radius:12px;padding:20px;box-shadow:0 0 30px #0ff6;position:relative;
+        }
+        body.theme-white .modal-content{background:#fff;border-color:#0a5a8a;box-shadow:0 0 30px rgba(10,90,138,0.3);}
+        body.theme-dark .modal-content{background:#1a1a1a;border-color:#0ff;box-shadow:0 0 30px rgba(0,255,255,0.2);}
+        .modal-content img{max-width:100%;max-height:70vh;border-radius:6px}
+        .modal-close{position:absolute;top:5px;right:15px;font-size:30px;cursor:pointer;}
+        body.theme-white .modal-close{color:#0a5a8a;}
+        body.theme-dark .modal-close{color:#0ff;}
+        .preview-msg{font-size:20px;padding:40px;text-align:center;}
+        body.theme-white .preview-msg{color:#0a5a8a;}
+        @media (max-width:640px){
+            .top-bar{flex-direction:column;align-items:stretch;}
+            .side-toc{right:5px;padding:6px 4px;}
+            .side-toc a{width:10px;height:10px;}
+            .box{padding:12px 10px;width:96%;}
+            .img-item{height:80px;min-width:60px;font-size:10px;}
+            .spec-card{grid-template-columns:1fr;}
+            .converter-tool{flex-direction:column;align-items:stretch;}
+            .car-desc-list{grid-template-columns:1fr;}
+        }
+        @media (max-width:480px){header{padding:16px 10px;}.nav-toggle{font-size:15px;}}
+        /* 公告栏样式 */
+        #announcement {
+            width:92%;max-width:1200px;margin:16px auto 0 auto;
+            background:linear-gradient(135deg,#1a0a3a,#2a1a5a,#1a0a3a);
+            border:1px solid #0ff6;
+            border-radius:8px;
+            padding:12px 18px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            box-shadow:0 0 20px #0ff3, inset 0 0 20px #0ff2;
+            transition:all 0.4s ease;
+        }
+        #announcement .ann-text {
+            display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+        }
+        #announcement .ann-close {
+            background:transparent;border:none;color:#0ff;font-size:22px;
+            cursor:pointer;padding:0 8px;transition:0.3s;opacity:0.7;
+        }
+        #announcement .ann-close:hover{opacity:1;}
+        #announcement .qq-badge {
+            color:#ff6;background:#0a0520;padding:2px 12px;
+            border-radius:12px;border:1px solid #ff6;
         }
     </style>
 </head>
-<body>
-    <header>
-        <div class="logo">窍某汽车网</div>
-        <nav class="nav-box">
-            <a href="#home">首页</a>
-            <a href="#brand">日系品牌档案</a>
-            <a href="#cars">经典车型库</a>
-            <a href="#tune">改装分级方案</a>
-            <a href="#jdm">JDM文化</a>
-            <a href="#game">全平台游戏调校</a>
-            <a href="#about">站点说明</a>
-            <a href="#contact">联系我们</a>
-        </nav>
-    </header>
+<body id="top" class="theme-neon">
+<div id="glow"></div>
 
-    <section class="hero" id="home">
-        <h1>JDM性能车 · 科技改装 · 游戏调校资料库</h1>
-        <p>车型历史、动力改装、姿态方案全覆盖；FR Legends、湾岸5DX+、神力科莎、地平线、头文字D全套可直接套用调校参数，赛车爱好者专属科技向站点</p>
-    </section>
+<!-- 图片弹窗 -->
+<div class="modal-overlay" id="imageModal">
+    <div class="modal-content">
+        <span class="modal-close" id="modalClose">&times;</span>
+        <img id="modalImg" src="" alt="预览图" style="display:none;">
+        <div class="preview-msg" id="previewMsg">📷 图片预览</div>
+    </div>
+</div>
 
-    <section class="container" id="brand">
-        <h2 class="sec-title">日系六大性能车企完整档案</h2>
-        <div class="grid-row">
-            <div class="tech-card">
-                <h3>丰田 TOYOTA</h3>
-                <p>后驱底盘调校功底深厚，4A-GE、2JZ-GTE两台神机统治改装圈数十年。配件存量极大，新手改装容错率高。Supra、AE86、Chaser、Mark II都是漂移热门车型。</p>
-                <span class="tag-cyan">后驱标杆</span>
-                <span class="tag-cyan">耐造耐用</span>
-            </div>
-            <div class="tech-card">
-                <h3>本田 HONDA</h3>
-                <p>VTEC高转速自吸代表，高转爆发爆发力极强。S2000、Type-R系列轻量化极致，赛道圈速稳定，适合走线竞技，不适合重度涡轮暴力改装。</p>
-                <span class="tag-red">高转自吸</span>
-                <span class="tag-red">赛道取向</span>
-            </div>
-            <div class="tech-card">
-                <h3>日产 NISSAN</h3>
-                <p>Skyline GT-R ATTESA四驱黑科技，RB26DETT潜力恐怖。S13/S14/S15漂移街车普及率第一，涡轮改装上限极高，直线加速优势明显。</p>
-                <span class="tag-cyan">四驱战神</span>
-                <span class="tag-cyan">漂移神车</span>
-            </div>
-            <div class="tech-card">
-                <h3>马自达 MAZDA</h3>
-                <p>独家转子发动机，声浪辨识度独一无二。FD3S外观流线感拉满，虽然养护成本高，但收藏价值极高，JDM情怀天花板车型之一。</p>
-                <span class="tag-red">转子专属</span>
-            </div>
-            <div class="tech-card">
-                <h3>三菱 MITSUBISHI</h3>
-                <p>EVO系列拉力四驱专用底盘，4G63T铸铁发动机暴力耐造，多片离合中央差速器可动态分配动力，山路、雨雪路面稳定性拉满。</p>
-                <span class="tag-cyan">WRC冠军</span>
-            </div>
-            <div class="tech-card">
-                <h3>斯巴鲁 SUBARU</h3>
-                <p>水平对置发动机+全时四驱标配，重心极低。WRX STI弯道极限高，冰雪赛道无敌，拉力赛事常客，北方改装玩家首选。</p>
-                <span class="tag-red">低重心四驱</span>
+<!-- ===== 头部 ===== -->
+<header>
+    <div class="cn">窍谋汽车游戏综合网站</div>
+    <div class="tw">竅謀汽車遊戲綜合網站</div>
+    <div class="en">Qiaomou Auto & Game</div>
+    <div class="top-bar">
+        <div class="lang-select-wrap">
+            <select id="langSelect">
+                <option value="cn">简体中文</option>
+                <option value="tw">繁體中文</option>
+                <option value="en">English</option>
+            </select>
+        </div>
+        <div class="theme-toggle-wrap">
+            <button id="themeToggle">🎨 霓虹主题</button>
+        </div>
+    </div>
+</header>
+
+<!-- ===== 导航栏 ===== -->
+<div class="nav-wrapper" id="navWrapper">
+    <div class="nav-toggle" id="navToggle">▼ 导航菜单</div>
+    <nav id="mainNav">
+        <a href="#intro" class="cn">介绍</a><a href="#intro" class="tw">介紹</a><a href="#intro" class="en">Intro</a>
+        <a href="#car-fuel" class="cn">小汽车</a><a href="#car-fuel" class="tw">小汽車</a><a href="#car-fuel" class="en">Cars</a>
+        <a href="#car-area" class="cn">全球车系</a><a href="#car-area" class="tw">全球車系</a><a href="#car-area" class="en">Regions</a>
+        <a href="#modify" class="cn">改装</a><a href="#modify" class="tw">改裝</a><a href="#modify" class="en">Mod</a>
+        <a href="#game" class="cn">游戏</a><a href="#game" class="tw">遊戲</a><a href="#game" class="en">Games</a>
+        <a href="#soft" class="cn">软件</a><a href="#soft" class="tw">軟體</a><a href="#soft" class="en">Tools</a>
+        <a href="#race" class="cn">赛事</a><a href="#race" class="tw">賽事</a><a href="#race" class="en">Racing</a>
+        <a href="#model" class="cn">车模</a><a href="#model" class="tw">車模</a><a href="#model" class="en">Models</a>
+        <a href="#gallery" class="cn">图库</a><a href="#gallery" class="tw">圖庫</a><a href="#gallery" class="en">Gallery</a>
+        <a href="#contact" class="cn">联系</a><a href="#contact" class="tw">聯絡</a><a href="#contact" class="en">Contact</a>
+        <a href="#converter" class="cn">工具</a><a href="#converter" class="tw">工具</a><a href="#converter" class="en">Tools</a>
+        <!-- 新增导航快捷入口 -->
+        <a href="#race-drivers" class="cn">🏁车手</a><a href="#race-drivers" class="tw">🏁車手</a><a href="#race-drivers" class="en">🏁Drivers</a>
+        <a href="#tuning-brands" class="cn">🔧品牌</a><a href="#tuning-brands" class="tw">🔧品牌</a><a href="#tuning-brands" class="en">🔧Brands</a>
+    </nav>
+</div>
+
+<!-- ===== 公告栏 ===== -->
+<div id="announcement">
+    <div class="ann-text">
+        <span style="font-size:24px;">📢</span>
+        <span style="font-size:clamp(14px,1.5vw,17px);color:#0ff;font-weight:bold;">
+            <span class="cn">公告：本站有各种游戏的官网，有兴趣可以加入QQ群讨论 <span class="qq-badge">964120129</span></span>
+            <span class="tw">公告：本站有各種遊戲的官網，有興趣可以加入QQ群討論 <span class="qq-badge">964120129</span></span>
+            <span class="en">Notice: Official game websites available. Join QQ group <span class="qq-badge">964120129</span> for discussion!</span>
+        </span>
+    </div>
+    <button class="ann-close" id="closeAnnouncement">✕</button>
+</div>
+
+<!-- ===== 侧边目录 ===== -->
+<div class="side-toc" id="sideToc"></div>
+
+<!-- ===== 阅读进度环 ===== -->
+<div class="progress-ring" id="progressRing">
+    <svg width="54" height="54">
+        <circle class="bg" cx="27" cy="27" r="22" />
+        <circle class="progress" id="progressCircle" cx="27" cy="27" r="22" stroke-dasharray="138.23" stroke-dashoffset="0" />
+    </svg>
+</div>
+
+<!-- ============================================================ -->
+<!-- ===== 1. 网站介绍 ===== -->
+<div class="box" id="intro" data-section="intro">
+    <div class="title" data-section-title="intro">
+        <span class="cn">一、网站介绍</span><span class="tw">一、網站介紹</span><span class="en">1. About Us</span>
+        <span class="like-btn" data-like="intro">❤️ <span class="like-count">0</span> <span class="global-like-info">🔥 热度 <span class="hot-badge">+87</span></span></span>
+    </div>
+    <p class="cn">窍谋汽车游戏网成立于<strong>2026年</strong>，是国内专注汽车文化、改装、赛事、游戏及车模收藏的综合社区。我们秉持“玩车·游戏·分享”的理念，汇集全球汽车资讯、深度车型解析、改装方案库、赛车游戏攻略以及品牌车模评测。社群规则：友善交流，禁止广告刷屏，鼓励原创内容。投稿说明：欢迎投稿改装案例、赛事游记、游戏MOD、车模开箱，投稿邮箱见联系方式，采用后赠送网站纪念品。本站所有外链均新窗口打开，便于查阅。</p>
+    <p class="tw">竅謀汽車遊戲網成立於<strong>2026年</strong>，專注汽車文化、改裝、賽事、遊戲及車模收藏。社羣規則：友善交流，禁止廣告洗版，鼓勵原創。投稿請寄聯絡信箱，採用後贈送紀念品。</p>
+    <p class="en">Qiaomou Auto & Game, founded in <strong>2026</strong>, is a community for car culture, tuning, racing games, and model collecting. We promote friendly discussion, original content. Submissions welcome via email.</p>
+</div>
+
+<!-- ===== 2. 小汽车动力专区 ===== -->
+<div class="box" id="car-fuel" data-section="car-fuel">
+    <div class="title" data-section-title="car-fuel">
+        <span class="cn">二、小汽车动力专区（柴油/汽油/新能源）</span><span class="tw">二、小汽車動力專區（柴油/汽油/新能源）</span><span class="en">2. Power Zone (Diesel/Gasoline/EV)</span>
+        <span class="like-btn" data-like="car-fuel">❤️ <span class="like-count">0</span> <span class="global-like-info">🔥 热度 <span class="hot-badge">+203</span></span></span>
+    </div>
+    <div class="sub-title cn">柴油车分区</div>
+    <div class="sub-title tw">柴油車分區</div>
+    <div class="sub-title en">Diesel Zone</div>
+    <div class="sub-title cn">①经典车型</div>
+    <div class="sub-title tw">①經典車型</div>
+    <div class="sub-title en">①Classic Car</div>
+    <div class="img-box">
+        <div class="img-item" style="background-image:linear-gradient(135deg,#2a1a44,#1a2a55);"><span class="placeholder-text">路虎揽胜TDI</span></div>
+        <div class="img-item" style="background-image:linear-gradient(135deg,#1a2a44,#2a1a55);"><span class="placeholder-text">大众帕萨特B5柴油</span></div>
+        <div class="img-item" style="background-image:linear-gradient(135deg,#2a2a44,#1a3a55);"><span class="placeholder-text">丰田海拉克斯柴油</span></div>
+        <div class="img-item" style="background-image:linear-gradient(135deg,#3a1a44,#2a2a55);"><span class="placeholder-text">奔驰W210柴油</span></div>
+    </div>
+    <div class="car-desc-list">
+        <div class="car-item"><span class="name">路虎揽胜TDI</span><span class="desc">3.0T V6柴油，600N·m，越野长途</span></div>
+        <div class="car-item"><span class="name">大众帕萨特B5柴油</span><span class="desc">1.9TDI，经济耐用，经典德系</span></div>
+        <div class="car-item"><span class="name">丰田海拉克斯柴油</span><span class="desc">3.0D-4D，皮卡传奇，百万公里无大修</span></div>
+        <div class="car-item"><span class="name">奔驰W210柴油</span><span class="desc">2.9TDI，豪华柴油轿车代表</span></div>
+    </div>
+    <p class="cn">品牌历史：柴油发动机由鲁道夫·狄塞尔在1892年研发成功，最初仅用于重型工业机械与船舶，20世纪30年代奔驰首次将柴油引擎搭载在乘用车上，开启柴油民用汽车历史。二战后欧洲因为石油资源匮乏，大力推广柴油乘用车技术，大众、宝马、奥迪、路虎、丰田陆续投入柴油机型研发。上世纪70年代石油危机爆发，柴油车低油耗、高扭矩的优势彻底爆发，欧洲多国私家车柴油占比突破50%。各大车企不断优化共轨喷射、涡轮增压、DPF尾气处理系统，解决柴油黑烟、噪音大的痛点。历经近百年迭代，柴油车型从笨重商用车动力，转变为越野、长途家用的主力动力形式，很多经典柴油车型凭借超高耐用度成为收藏热门，部分老款柴油越野车行驶百万公里无大修，书写了柴油汽车的传奇发展史。</p>
+    <p class="tw">品牌歷史：柴油引擎由魯道夫·狄塞爾在1892年研發成功，最初只用於重工業機械與船舶，1930年代賓士首次將柴油引擎安裝在乘用車，開啟柴油民用汽車歷史。二戰後歐洲石油短缺，大力發展柴油乘用車技術，大眾、寶馬、奧迪、路虎、豐田陸續研發柴油動力。1970年代石油危機爆發，柴油車低油耗、大扭力優勢爆發，歐洲私家車柴油佔比超過五成。車廠改良高壓共軌、渦輪增壓、廢氣處理，改善黑煙與噪音。百年演變後，柴油車成為越野與長途家用主力，老車耐用度極高，百萬公里無大修，成為收藏經典。</p>
+    <p class="en">Brand History: Diesel engine invented by Rudolf Diesel in 1892. Mercedes first used diesel on passenger cars in 1930s. After WWII, Europe promoted diesel cars for fuel shortage. In 1970s oil crisis, diesel became popular for low fuel cost & high torque. Modern tech fixed smoke & noise problems.</p>
+
+    <div class="sub-title cn">②家用车型</div>
+    <div class="sub-title tw">②家用車型</div>
+    <div class="sub-title en">②Family Car</div>
+    <div class="img-box">
+        <div class="img-item" style="background-image:linear-gradient(135deg,#1a3a44,#2a2a55);"><span class="placeholder-text">标致308柴油版</span></div>
+        <div class="img-item" style="background-image:linear-gradient(135deg,#2a3a44,#1a2a55);"><span class="placeholder-text">福特福克斯柴油</span></div>
+        <div class="img-item" style="background-image:linear-gradient(135deg,#3a2a44,#2a3a55);"><span class="placeholder-text">五十铃MU-X</span></div>
+        <div class="img-item" style="background-image:linear-gradient(135deg,#2a2a44,#3a1a55);"><span class="placeholder-text">高尔夫MK7柴油</span></div>
+    </div>
+    <div class="car-desc-list">
+        <div class="car-item"><span class="name">标致308柴油版</span><span class="desc">1.6 BlueHDI，油耗4.5L，欧洲家用</span></div>
+        <div class="car-item"><span class="name">福特福克斯柴油</span><span class="desc">2.0TDCi，操控好，实用空间</span></div>
+        <div class="car-item"><span class="name">五十铃MU-X</span><span class="desc">1.9T，7.6L油耗，7座SUV</span></div>
+        <div class="car-item"><span class="name">高尔夫MK7柴油</span><span class="desc">2.0TDI，4.8L油耗，神车基因</span></div>
+    </div>
+    <p class="cn">家用柴油车是车企针对普通家庭通勤打造的细分产品线，20世纪80年代欧洲车企为应对油价，专门研发小排量柴油自吸、涡轮机型。大众高尔夫柴油版是全球首款爆款家用柴油小车，后续标致、雪铁龙、福特跟进研发紧凑型家用柴油车。亚洲地区以丰田、五十铃为代表，打造东南亚家用柴油MPV、小型SUV。车企在研发中平衡油耗、空间、舒适性，弱化商用柴油车的粗糙质感，增加内饰配置、隔音优化，让柴油车适配日常买菜、短途出游的家庭需求。三十余年发展中，家用柴油车完善了小型化动力体系，是很多海外普通家庭第一台车的选择。</p>
+    <p class="tw">家用柴油車是車廠針對日常通勤開發，1980年代歐洲為油價開發小排量渦輪柴油車，福斯高爾夫柴油版熱銷後，標緻、福特跟進。亞洲豐田、五十鈴主打東南亞MPV與小型SUV。車廠強化舒適度與隔音，適合日常代步與短途旅遊，是海外家庭首選代步車。</p>
+    <p class="en">Family diesel cars born in 1980s Europe for high oil price. VW Golf Diesel was bestseller. Isuzu & Toyota developed Asian MPV & SUV for family use.</p>
+
+    <div class="sub-title cn">③新款跑车</div>
+    <div class="sub-title tw">③新款跑車</div>
+    <div class="sub-title en">③New Sports Car</div>
+    <div class="img-box">
+        <div class="img-item" style="background-image:linear-gradient(135deg,#2a4a44,#1a2a55);"><span class="placeholder-text">奥迪R8 TDI概念</span></div>
+        <div class="img-item" style="background-image:linear-gradient(135deg,#1a4a44,#2a3a55);"><span class="placeholder-text">卡宴Turbo柴油</span></div>
+        <div class="img-item" style="background-image:linear-gradient(135deg,#3a4a44,#1a3a55);"><span class="placeholder-text">奥迪勒芒TDI赛车</span></div>
+        <div class="img-item" style="background-image:linear-gradient(135deg,#2a4a44,#3a2a55);"><span class="placeholder-text">宝马X6 M50d</span></div>
+    </div>
+    <div class="car-desc-list">
+        <div class="car-item"><span class="name">奥迪R8 TDI概念</span><span class="desc">V12柴油，1000N·m，勒芒技术</span></div>
+        <div class="car-item"><span class="name">卡宴Turbo柴油</span><span class="desc">4.0 V8柴油，高性能SUV</span></div>
+        <div class="car-item"><span class="name">奥迪勒芒TDI赛车</span><span class="desc">赢得勒芒耐力赛冠军</span></div>
+        <div class="car-item"><span class="name">宝马X6 M50d</span><span class="desc">3.0T三涡轮，SAC轿跑SUV</span></div>
+    </div>
+    <p class="cn">柴油跑车属于小众赛道产物，奥迪是柴油跑车领路人，2006年奥迪研发TDI柴油赛车征战勒芒24小时耐力赛，连续多年夺冠，验证柴油大扭矩跑车潜力。宝马、保时捷短暂研发柴油性能车型，主打长途高速性能。柴油跑车品牌研发初衷依靠柴油高扭矩实现起步加速优势，兼顾长途续航，多用于耐力赛事。由于排放限制，量产柴油跑车数量稀少，全部为限量定制版本，品牌研发投入少，仅保留赛事技术储备。</p>
+    <p class="tw">柴油跑車屬於賽道專用車，奧迪2006年以TDI柴油賽車拿下利曼大賽冠軍，證明大扭力潛力。寶馬、保時捷少量推出高性能柴油車，主打長途高速。受環保法規限制，量產柴油超跑極少，多為限量版本。</p>
+    <p class="en">Audi leads diesel sports car by winning Le Mans with TDI. BMW & Porsche made limited high-performance diesel models. Strict emission laws stop mass production now.</p>
+
+    <!-- 汽油车分区 -->
+    <div class="sub-title cn">汽油车分区</div>
+    <div class="sub-title tw">汽油車分區</div>
+    <div class="sub-title en">Gasoline Zone</div>
+    <div class="sub-title cn">①经典车型</div>
+    <div class="sub-title tw">①經典車型</div>
+    <div class="sub-title en">①Classic</div>
+    <div class="img-box">
+        <div class="img-item" style="background-image:linear-gradient(135deg,#4a2a44,#2a4a55);"><span class="placeholder-text">丰田AE86</span></div>
+        <div class="img-item" style="background-image:linear-gradient(135deg,#3a4a44,#1a3a55);"><span class="placeholder-text">宝马E30</span></div>
+        <div class="img-item" style="background-image:linear-gradient(135deg,#2a4a44,#3a2a55);"><span class="placeholder-text">初代科迈罗</span></div>
+        <div class="img-item" style="background-image:linear-gradient(135deg,#4a3a44,#2a4a55);"><span class="placeholder-text">日产S13</span></div>
+    </div>
+    <div class="car-desc-list">
+        <div class="car-item"><span class="name">丰田AE86</span><span class="desc">1.6L 4A-GE，130匹，漂移神车</span></div>
+        <div class="car-item"><span class="name">宝马E30</span><span class="desc">直六自吸，后驱操控标杆</span></div>
+        <div class="car-item"><span class="name">初代科迈罗</span><span class="desc">美式肌肉，V8狂野</span></div>
+        <div class="car-item"><span class="name">日产S13</span><span class="desc">2.0T，FR布局，JDM经典</span></div>
+    </div>
+    <p class="cn">汽油乘用车诞生于1886年奔驰一号，是汽车发展史最主流动力形式。百余年发展中，丰田、本田、宝马、法拉利、雪佛兰等全球车企围绕汽油发动机迭代，从单缸自吸到多缸涡轮、V型引擎。欧美车企深耕大排量自吸，日系主攻小排量高转速自吸，形成两大汽油动力路线。汽油车配套产业链完善，加油站遍布全球，是民用汽车绝对主力，无数经典车型依靠汽油动力成为汽车文化符号。</p>
+    <p class="tw">汽油乘用車始於1886賓士一號，是全球主流動力。歐美主打大排量自然進氣，日系主攻高轉速小排量，百款經典老車成為改裝文化代表。</p>
+    <p class="en">Gasoline car started from Benz 1886. EU uses big NA engine, Japan uses small high-rev engine.</p>
+
+    <div class="sub-title cn">②家用车型</div>
+    <div class="sub-title tw">②家用車型</div>
+    <div class="sub-title en">②Family</div>
+    <div class="img-box">
+        <div class="img-item" style="background-image:linear-gradient(135deg,#1a2a44,#2a1a55);"><span class="placeholder-text">丰田卡罗拉</span></div>
+        <div class="img-item" style="background-image:linear-gradient(135deg,#2a3a44,#1a2a55);"><span class="placeholder-text">大众朗逸</span></div>
+        <div class="img-item" style="background-image:linear-gradient(135deg,#3a2a44,#2a3a55);"><span class="placeholder-text">本田思域</span></div>
+        <div class="img-item" style="background-image:linear-gradient(135deg,#4a2a44,#2a4a55);"><span class="placeholder-text">轩逸经典</span></div>
+    </div>
+    <div class="car-desc-list">
+        <div class="car-item"><span class="name">丰田卡罗拉</span><span class="desc">1.2T，5.6L油耗，全球销冠</span></div>
+        <div class="car-item"><span class="name">大众朗逸</span><span class="desc">1.4T，中国特供，皮实耐造</span></div>
+        <div class="car-item"><span class="name">本田思域</span><span class="desc">1.5T，运动家用，VTEC</span></div>
+        <div class="car-item"><span class="name">轩逸经典</span><span class="desc">1.6L，舒适大空间，国民家轿</span></div>
+    </div>
+    <p class="cn">家用汽油车是车企销量核心，丰田卡罗拉、大众朗逸、本田思域都是全球常青家用产品线，车企以耐用、省油、低成本为研发核心，适配全球家庭需求。</p>
+    <p class="tw">卡羅拉、朗逸、思域為全球熱銷家用車，研發核心為耐用省油、維修便宜。</p>
+    <p class="en">Corolla, Lavida, Civic are global top-selling family cars for low cost & reliability.</p>
+
+    <div class="sub-title cn">③新款跑车</div>
+    <div class="sub-title tw">③新款跑車</div>
+    <div class="sub-title en">③New Sport</div>
+    <div class="img-box">
+        <div class="img-item" style="background-image:linear-gradient(135deg,#1a2a44,#2a1a55);"><span class="placeholder-text">法拉利296GTB</span></div>
+        <div class="img-item" style="background-image:linear-gradient(135deg,#2a3a44,#1a2a55);"><span class="placeholder-text">兰博基尼Revuelto</span></div>
+        <div class="img-item" style="background-image:linear-gradient(135deg,#3a2a44,#2a3a55);"><span class="placeholder-text">迈凯伦Artura</span></div>
+        <div class="img-item" style="background-image:linear-gradient(135deg,#4a2a44,#2a4a55);"><span class="placeholder-text">宝马M4</span></div>
+    </div>
+    <div class="car-desc-list">
+        <div class="car-item"><span class="name">法拉利296GTB</span><span class="desc">3.0T V6混动，830匹，2.9秒</span></div>
+        <div class="car-item"><span class="name">兰博基尼Revuelto</span><span class="desc">V12混动，1001匹，插混超跑</span></div>
+        <div class="car-item"><span class="name">迈凯伦Artura</span><span class="desc">3.0T V6混动，680匹，轻量化</span></div>
+        <div class="car-item"><span class="name">宝马M4</span><span class="desc">3.0T直六，510匹，双门轿跑</span></div>
+    </div>
+    <p class="cn">法拉利、兰博基尼、迈凯伦百年专注汽油超跑研发，依靠大排量自吸/双涡轮打造顶级性能，是汽车工业顶尖代表。新款汽油跑车搭配混动辅助，兼顾性能与排放，零百加速普遍3秒内，空气动力学拉满。</p>
+    <p class="tw">法拉利、藍寶堅尼、麥拿侖專注超跑研發，現今多搭配油電混合，兼顧性能與環保，零百加速大多3秒內。</p>
+    <p class="en">Ferrari/Lamborghini/McLaren build top supercars, most new models use hybrid system for emission rules.</p>
+
+    <!-- 新能源分区 -->
+    <div class="sub-title cn">新能源分区</div>
+    <div class="sub-title tw">新能源分區</div>
+    <div class="sub-title en">EV Zone</div>
+    <div class="sub-title cn">①经典车型</div>
+    <div class="sub-title tw">①經典車型</div>
+    <div class="sub-title en">①Classic EV</div>
+    <div class="img-box">
+        <div class="img-item" style="background-image:linear-gradient(135deg,#1a2a44,#2a1a55);"><span class="placeholder-text">丰田初代普锐斯</span></div>
+        <div class="img-item" style="background-image:linear-gradient(135deg,#2a3a44,#1a2a55);"><span class="placeholder-text">特斯拉Roadster1代</span></div>
+        <div class="img-item" style="background-image:linear-gradient(135deg,#3a2a44,#2a3a55);"><span class="placeholder-text">日产初代Leaf</span></div>
+        <div class="img-item" style="background-image:linear-gradient(135deg,#4a2a44,#2a4a55);"><span class="placeholder-text">比亚迪F3DM</span></div>
+    </div>
+    <div class="car-desc-list">
+        <div class="car-item"><span class="name">丰田初代普锐斯</span><span class="desc">1.5L混动，开创新能源时代</span></div>
+        <div class="car-item"><span class="name">特斯拉Roadster1代</span><span class="desc">纯电跑车，续航393km</span></div>
+        <div class="car-item"><span class="name">日产初代Leaf</span><span class="desc">首款量产纯电家用车</span></div>
+        <div class="car-item"><span class="name">比亚迪F3DM</span><span class="desc">中国首款双模混动</span></div>
+    </div>
+    <p class="cn">早期新能源车型1990年左右诞生，丰田普锐斯是全球首款量产混动经典车，开启新能源民用时代，特斯拉初代Roadster打开纯电跑车市场。</p>
+    <p class="tw">1990年代普銳斯為首款量產油電車，特斯拉初代Roadster開啟純電跑車市場。</p>
+    <p class="en">Toyota Prius first mass hybrid car, Tesla Roadster started pure electric sports car era.</p>
+
+    <div class="sub-title cn">②家用车型</div>
+    <div class="sub-title tw">②家用車型</div>
+    <div class="sub-title en">②Family EV</div>
+    <div class="img-box">
+        <div class="img-item" style="background-image:linear-gradient(135deg,#1a2a44,#2a1a55);"><span class="placeholder-text">比亚迪海豚</span></div>
+        <div class="img-item" style="background-image:linear-gradient(135deg,#2a3a44,#1a2a55);"><span class="placeholder-text">特斯拉Model3</span></div>
+        <div class="img-item" style="background-image:linear-gradient(135deg,#3a2a44,#2a3a55);"><span class="placeholder-text">广汽埃安Y</span></div>
+        <div class="img-item" style="background-image:linear-gradient(135deg,#4a2a44,#2a4a55);"><span class="placeholder-text">大众ID.3</span></div>
+    </div>
+    <div class="car-desc-list">
+        <div class="car-item"><span class="name">比亚迪海豚</span><span class="desc">纯电，420km续航，e平台3.0</span></div>
+        <div class="car-item"><span class="name">特斯拉Model3</span><span class="desc">后驱/四驱，智能辅助驾驶</span></div>
+        <div class="car-item"><span class="name">广汽埃安Y</span><span class="desc">紧凑型SUV，空间大</span></div>
+        <div class="car-item"><span class="name">大众ID.3</span><span class="desc">MEB平台，后驱两厢</span></div>
+    </div>
+    <p class="cn">比亚迪、特斯拉、广汽、大众发力家用新能源，打造平价代步电车，成为当下家用主流选择。</p>
+    <p class="tw">比亞迪、特斯拉、廣汽、福斯開發平價家用電車，現為市場主流。</p>
+    <p class="en">BYD/Tesla/GAC/VW make affordable EV for daily family use.</p>
+
+    <div class="sub-title cn">③新款跑车</div>
+    <div class="sub-title tw">③新款跑車</div>
+    <div class="sub-title en">③EV Sport</div>
+    <div class="img-box">
+        <div class="img-item" style="background-image:linear-gradient(135deg,#1a2a44,#2a1a55);"><span class="placeholder-text">蔚来EP9</span></div>
+        <div class="img-item" style="background-image:linear-gradient(135deg,#2a3a44,#1a2a55);"><span class="placeholder-text">Rimac Nevera</span></div>
+        <div class="img-item" style="background-image:linear-gradient(135deg,#3a2a44,#2a3a55);"><span class="placeholder-text">特斯拉Roadster二代</span></div>
+        <div class="img-item" style="background-image:linear-gradient(135deg,#4a2a44,#2a4a55);"><span class="placeholder-text">路特斯Evija</span></div>
+    </div>
+    <div class="car-desc-list">
+        <div class="car-item"><span class="name">蔚来EP9</span><span class="desc">纯电，1360匹，纽北记录</span></div>
+        <div class="car-item"><span class="name">Rimac Nevera</span><span class="desc">1914匹，1.97秒破百</span></div>
+        <div class="car-item"><span class="name">特斯拉Roadster二代</span><span class="desc">三电机，1000km续航</span></div>
+        <div class="car-item"><span class="name">路特斯Evija</span><span class="desc">四电机，2000匹，限量超跑</span></div>
+    </div>
+    <p class="cn">Rimac、特斯拉、蔚来打造纯电超跑，用电驱替代燃油引擎，电机瞬时峰值扭矩，零百加速碾压燃油超跑，智能化电控底盘。</p>
+    <p class="tw">Rimac、特斯拉、蔚來研發純電超跑，電機瞬間扭力遠超燃油車，加速表現頂尖。</p>
+    <p class="en">Rimac/Tesla/NIO build electric hypercars with instant torque faster than gas supercars.</p>
+
+    <!-- 大众高尔夫TDI 完整介绍 -->
+    <div style="margin-top:30px;border-top:2px solid #0ff4;padding-top:20px;">
+        <div class="sub-title cn">▼ 大众高尔夫TDI（柴油）完整车型介绍</div>
+        <div class="sub-title tw">▼ 福斯高爾夫TDI（柴油）完整車型介紹</div>
+        <div class="sub-title en">▼ VW Golf TDI Full Review</div>
+        <div class="img-box">
+            <div class="img-item" style="background-image:linear-gradient(135deg,#2a4a44,#1a2a55);"><span class="placeholder-text">高尔夫MK7 TDI</span></div>
+            <div class="img-item" style="background-image:linear-gradient(135deg,#1a4a44,#2a3a55);"><span class="placeholder-text">2.0TDI引擎</span></div>
+            <div class="img-item" style="background-image:linear-gradient(135deg,#3a4a44,#1a3a55);"><span class="placeholder-text">柴油版内饰</span></div>
+            <div class="img-item" style="background-image:linear-gradient(135deg,#2a4a44,#3a2a55);"><span class="placeholder-text">油耗实测4.8L</span></div>
+        </div>
+        <div class="spec-card" id="golfSpec">
+            <div class="spec-item"><span class="label">引擎</span><span class="value">2.0 TDI 涡轮增压</span></div>
+            <div class="spec-item"><span class="label">最大功率</span><span class="value">150 hp (110 kW)</span></div>
+            <div class="spec-item"><span class="label">峰值扭矩</span><span class="value">340 N·m</span></div>
+            <div class="spec-item"><span class="label">变速箱</span><span class="value">6速DSG</span></div>
+            <div class="spec-item"><span class="label">驱动方式</span><span class="value">前置前驱</span></div>
+            <div class="spec-item"><span class="label">0-100 km/h</span><span class="value">8.6秒</span></div>
+            <div class="spec-item"><span class="label">综合油耗</span><span class="value">4.8 L/100km</span></div>
+            <div class="spec-item"><span class="label">续航 (50L油箱)</span><span class="value">~1040 km</span></div>
+        </div>
+        <button class="compare-toggle" data-compare="golfSpec">🔁 对比模式</button>
+        <div class="compare-panel" id="comparePanel">
+            <div class="compare-row">
+                <div class="compare-col"><h4>高尔夫TDI</h4><div class="param"><span>功率</span><span>150 hp</span></div><div class="param"><span>扭矩</span><span>340 N·m</span></div><div class="param"><span>油耗</span><span>4.8 L</span></div></div>
+                <div class="compare-col"><h4>五十铃MU-X</h4><div class="param"><span>功率</span><span>163 hp</span></div><div class="param"><span>扭矩</span><span>360 N·m</span></div><div class="param"><span>油耗</span><span>7.6 L</span></div></div>
             </div>
         </div>
-    </section>
+        <p class="cn"><strong>参数：</strong>大众高尔夫TDI（MK7）搭载2.0TDI涡轮增压柴油引擎，最大功率110kW（150匹），峰值扭矩340N·m，匹配6速DSG双离合变速箱，前置前驱。百公里加速8.6秒，极速216km/h。<br><strong>油耗：</strong>综合工况油耗4.8L/100km，高速巡航可低至4.2L/100km，油箱容量50L，续航轻松突破1000公里。<br><strong>优缺点：</strong>优势：超低油耗、强大低扭（1500rpm即可爆发340N·m）、耐用性极佳，保养周期长；劣势：噪音略大于汽油版，国内部分地区对柴油车政策限制。<br><strong>适用人群：</strong>适合长途通勤、自驾游爱好者，追求经济性与高扭矩的务实家庭，以及欧洲柴油车文化玩家。</p>
+        <p class="tw"><strong>參數：</strong>福斯高爾夫TDI 2.0TDI，150匹，340N·m，6速DSG，前驅。0-100 8.6秒。<br><strong>油耗：</strong>綜合4.8L/100km，高速4.2L，續航1000km+。<br><strong>優缺點：</strong>低油耗、大扭力、耐用；噪音略大，部分地區政策限制。<br><strong>適用：</strong>長途通勤、自駕愛好者，務實家庭。</p>
+        <p class="en"><strong>Specs:</strong> VW Golf TDI 2.0TDI, 150hp, 340N·m, 6-speed DSG, FWD. 0-100 8.6s.<br><strong>Fuel:</strong> 4.8L/100km combined, 4.2L highway, range 1000km+.<br><strong>Pros/Cons:</strong> low fuel, high torque, durable; diesel clatter, policy limits in some regions.<br><strong>Ideal for:</strong> long-distance commuters, road-trippers, diesel enthusiasts.</p>
+    </div>
+</div>
 
-    <section class="container" id="cars">
-        <h2 class="sec-title">殿堂级经典JDM车型详解</h2>
-        <div class="grid-row">
-            <div class="tech-card">
-                <h3>AE86 Trueno</h3>
-                <p>1.6L 4A-GE高转自吸，轻量化前置后驱，原厂动力弱但车身配重近乎完美。头文字D加持，全球山路漂移入门标杆，改装方案成熟。</p>
-            </div>
-            <div class="tech-card">
-                <h3>Supra MK4 JZA80</h3>
-                <p>2JZ-GTE直列六缸涡轮，原厂280匹，无需内部强化就能稳定500匹+，直线加速改装天花板，全球直线赛事常客。</p>
-            </div>
-            <div class="tech-card">
-                <h3>GT-R R34</h3>
-                <p>RB26DETT涡轮+四轮转向+智能四驱，弯道走线容错率极高，90年代日系性能巅峰，战神名号深入人心。</p>
-            </div>
-            <div class="tech-card">
-                <h3>RX-7 FD3S</h3>
-                <p>13B双转子涡轮，独特尖啸声浪，跳灯溜背外观经典；转子结构天生油耗高、易磨损，收藏属性远大于代步属性。</p>
-            </div>
-            <div class="tech-card">
-                <h3>EVO IX</h3>
-                <p>4G63T铸铁神机，拉力四驱底盘，连续多年拿下WRC分站冠军，山路缠斗、赛道全能无短板。</p>
-            </div>
-            <div class="tech-card">
-                <h3>S15 Silvia</h3>
-                <p>SR20DET涡轮后驱，车身小巧灵活，原厂底盘专为漂移调校，改装配件遍地都是，漂移赛事出场率常年第一。</p>
-            </div>
-        </div>
-    </section>
+<!-- ===== 3. 车辆地区专区 ===== -->
+<div class="box" id="car-area" data-section="car-area">
+    <div class="title" data-section-title="car-area">
+        <span class="cn">三、车辆地区专区（欧洲/亚洲/欧美/东南亚）</span><span class="tw">三、車輛地區專區（歐洲/亞洲/歐美/東南亞）</span><span class="en">3. Region Car Zone</span>
+        <span class="like-btn" data-like="car-area">❤️ <span class="like-count">0</span> <span class="global-like-info">🔥 热度 <span class="hot-badge">+156</span></span></span>
+    </div>
+    <div class="sub-title cn">1.欧洲车分区</div>
+    <div class="sub-title tw">1.歐洲車</div>
+    <div class="sub-title en">1.EU Car</div>
+    <div class="img-box"><div class="img-item" style="background-image:linear-gradient(135deg,#1a2a44,#2a1a55);"><span class="placeholder-text">奔驰S级</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#2a3a44,#1a2a55);"><span class="placeholder-text">标致508</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#3a2a44,#2a3a55);"><span class="placeholder-text">法拉利F8</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#4a2a44,#2a4a55);"><span class="placeholder-text">路虎卫士</span></div></div>
+    <div class="car-desc-list"><div class="car-item"><span class="name">奔驰S级</span><span class="desc">豪华旗舰，科技标杆</span></div><div class="car-item"><span class="name">标致508</span><span class="desc">法式设计，精致内饰</span></div><div class="car-item"><span class="name">法拉利F8</span><span class="desc">中置V8，极致性能</span></div><div class="car-item"><span class="name">路虎卫士</span><span class="desc">硬派越野，经典传承</span></div></div>
+    <p class="cn">欧洲是汽车发源地，德系BBA、大众、法系标致雪铁龙、意系法拉利兰博基尼、英系捷豹路虎组成欧洲车企矩阵。各国造车理念不同，德国重机械精密，法国重设计舒适，意大利重跑车性能，百年技术沉淀形成全球高端汽车标杆。</p>
+    <p class="tw">歐洲為汽車發源地，德系BBA、法系標緻、義大利超跑、英系越野各有特色，精密工藝為全球頂標。</p>
+    <p class="en">Europe birthplace of car. Germany for precision, France for design, Italy for supercar.</p>
+    <div class="sub-title cn">2.亚洲车分区</div>
+    <div class="sub-title tw">2.亞洲車</div>
+    <div class="sub-title en">2.Asia Car</div>
+    <div class="img-box"><div class="img-item" style="background-image:linear-gradient(135deg,#1a2a44,#2a1a55);"><span class="placeholder-text">丰田普拉多</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#2a3a44,#1a2a55);"><span class="placeholder-text">现代索纳塔</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#3a2a44,#2a3a55);"><span class="placeholder-text">比亚迪汉</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#4a2a44,#2a4a55);"><span class="placeholder-text">马自达CX5</span></div></div>
+    <div class="car-desc-list"><div class="car-item"><span class="name">丰田普拉多</span><span class="desc">硬派越野，可靠耐用</span></div><div class="car-item"><span class="name">现代索纳塔</span><span class="desc">B级车，高性价比</span></div><div class="car-item"><span class="name">比亚迪汉</span><span class="desc">纯电/混动，中国旗舰</span></div><div class="car-item"><span class="name">马自达CX5</span><span class="desc">创驰蓝天，操控出色</span></div></div>
+    <p class="cn">日系丰田本田日产、韩系现代起亚、中国自主品牌组成亚洲汽车核心，日系靠省油耐用崛起，韩系靠性价比，国产靠新能源弯道超车。</p>
+    <p class="tw">日系省油耐用、韓系高CP值、中國品牌靠電動車快速崛起。</p>
+    <p class="en">Japan:reliable & fuel save;Korea:good price;China:leading EV tech.</p>
+    <div class="sub-title cn">3.欧美车分区</div>
+    <div class="sub-title tw">3.歐美車</div>
+    <div class="sub-title en">3.America+EU</div>
+    <div class="img-box"><div class="img-item" style="background-image:linear-gradient(135deg,#1a2a44,#2a1a55);"><span class="placeholder-text">福特野马</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#2a3a44,#1a2a55);"><span class="placeholder-text">雪佛兰皮卡</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#3a2a44,#2a3a55);"><span class="placeholder-text">宝马X5</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#4a2a44,#2a4a55);"><span class="placeholder-text">奥迪A7</span></div></div>
+    <div class="car-desc-list"><div class="car-item"><span class="name">福特野马</span><span class="desc">肌肉跑车，V8声浪</span></div><div class="car-item"><span class="name">雪佛兰皮卡</span><span class="desc">全尺寸皮卡，实用狂野</span></div><div class="car-item"><span class="name">宝马X5</span><span class="desc">豪华SUV，公路之王</span></div><div class="car-item"><span class="name">奥迪A7</span><span class="desc">四门轿跑，科技优雅</span></div></div>
+    <p class="cn">美国通用福特克莱斯勒+欧洲豪华品牌统称欧美车系，美系主打大排量肌肉车、皮卡，欧系主打精密豪华。</p>
+    <p class="tw">美系大排量肌肉車與皮卡，歐系豪華精密。</p>
+    <p class="en">USA:muscle car & pickup;EU:luxury precise car.</p>
+    <div class="sub-title cn">4.东南亚车分区</div>
+    <div class="sub-title tw">4.東南亞車</div>
+    <div class="sub-title en">4.Southeast Asia</div>
+    <div class="img-box"><div class="img-item" style="background-image:linear-gradient(135deg,#1a2a44,#2a1a55);"><span class="placeholder-text">丰田Hilux</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#2a3a44,#1a2a55);"><span class="placeholder-text">三菱Triton</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#3a2a44,#2a3a55);"><span class="placeholder-text">本田StepWgn</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#4a2a44,#2a4a55);"><span class="placeholder-text">二手AE86改装</span></div></div>
+    <div class="car-desc-list"><div class="car-item"><span class="name">丰田Hilux</span><span class="desc">皮卡耐用王，改装热门</span></div><div class="car-item"><span class="name">三菱Triton</span><span class="desc">越野皮卡，东南亚畅销</span></div><div class="car-item"><span class="name">本田StepWgn</span><span class="desc">MPV，空间魔术师</span></div><div class="car-item"><span class="name">二手AE86改装</span><span class="desc">漂移文化，JDM经典</span></div></div>
+    <p class="cn">东南亚无本土大厂，以日系合资、二手改装车为主，泰国、马来西亚改装汽车文化浓厚。</p>
+    <p class="tw">東南亞無本土車廠，多日系二手改裝車，泰國、馬來西亞改裝文化盛行。</p>
+    <p class="en">No local big brands, mostly used Japanese modified cars in SEA.</p>
+</div>
 
-    <section class="container" id="tune">
-        <h2 class="sec-title">三阶分级改装全套方案</h2>
-        <div class="grid-row">
-            <div class="tech-card">
-                <h3>一阶｜外观姿态改装</h3>
-                <p>短弹簧/气动避震、定制轮毂+倾角调整、宽体包围、熏黑大灯、中尾段排气；不动动力，保留原厂代步舒适性，视觉战斗感拉满。</p>
-            </div>
-            <div class="tech-card">
-                <h3>二阶｜动力进阶升级</h3>
-                <p>高流量空滤、全段排气、泄压阀、ECU一阶特调；涡轮车型提升70–110匹，油门响应更快，日常通勤+赛道日两不误。</p>
-            </div>
-            <div class="tech-card">
-                <h3>三阶｜赛道重度强化</h3>
-                <p>锻造腹内、大涡轮、加大中冷、竞技离合、大四活塞刹车、底盘全套强化衬套；完全舍弃舒适性，专为赛道、漂移、直线加速打造。</p>
-            </div>
-            <div class="tech-card">
-                <h3>底盘操控专项强化</h3>
-                <p>绞牙避震、可调摆臂、前后防倾杆、钢喉竞技刹车油、轻量化飞轮；不提升马力，但过弯侧倾大幅降低，走线极限显著提升。</p>
-            </div>
-        </div>
-    </section>
+<!-- ===== 4. 汽车改装专区 ===== -->
+<div class="box" id="modify" data-section="modify">
+    <div class="title" data-section-title="modify">
+        <span class="cn">四、汽车改装专区</span><span class="tw">四、汽車改裝專區</span><span class="en">4. Car Modify Zone</span>
+        <span class="like-btn" data-like="modify">❤️ <span class="like-count">0</span> <span class="global-like-info">🔥 热度 <span class="hot-badge">+312</span></span></span>
+    </div>
+    <div class="sub-title cn">1.动力改装分区</div>
+    <div class="sub-title tw">1.動力改裝分區</div>
+    <div class="sub-title en">1.Power Mod</div>
+    <div class="img-box"><div class="img-item" style="background-image:linear-gradient(135deg,#1a2a44,#2a1a55);"><span class="placeholder-text">涡轮套件</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#2a3a44,#1a2a55);"><span class="placeholder-text">高流量空滤</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#3a2a44,#2a3a55);"><span class="placeholder-text">直排排气</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#4a2a44,#2a4a55);"><span class="placeholder-text">ECU特调</span></div></div>
+    <div class="car-desc-list"><div class="car-item"><span class="name">涡轮套件</span><span class="desc">增大进气压力，马力提升显著</span></div><div class="car-item"><span class="name">高流量空滤</span><span class="desc">降低进气阻力，油门响应更快</span></div><div class="car-item"><span class="name">直排排气</span><span class="desc">优化排气背压，释放后劲</span></div><div class="car-item"><span class="name">ECU特调</span><span class="desc">改写供油点火，适配改装硬件</span></div></div>
+    <p class="cn">动力改装是汽车改装核心项目，主要围绕进气、排气、涡轮、发动机程序升级。原厂发动机为兼顾油耗与耐用性调校保守，改装涡轮套件可以大幅提升进气压力，拉高峰值马力；高流量空气滤芯减少进气阻力，提升油门响应；直排排气优化废气流速，释放发动机后劲；ECU特调改写原厂供油点火数据，适配改装硬件。日系JDM、欧美性能车是动力改装热门车型，湾岸、头文字D游戏内改装逻辑也基于现实动力方案。</p>
+    <p class="tw">動力改裝為改裝核心，包含進氣、排氣、渦輪、ECU程式。原廠引擎調校保守，加裝渦輪、高流量空濾、直排排氣搭配程式調校可提升馬力，JDM與歐美性能車最常改裝，灣岸、頭文字D遊戲改裝參考現實方案。</p>
+    <p class="en">Power mod includes turbo, air filter, exhaust, ECU tuning. Most JDM & performance cars upgrade power parts for higher horsepower.</p>
+    <div class="sub-title cn">2.外观改装分区</div>
+    <div class="sub-title tw">2.外觀改裝分區</div>
+    <div class="sub-title en">2.Body Mod</div>
+    <div class="img-box"><div class="img-item" style="background-image:linear-gradient(135deg,#1a2a44,#2a1a55);"><span class="placeholder-text">宽体套件</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#2a3a44,#1a2a55);"><span class="placeholder-text">尾翼</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#3a2a44,#2a3a55);"><span class="placeholder-text">轮毂轮胎</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#4a2a44,#2a4a55);"><span class="placeholder-text">贴膜改色</span></div></div>
+    <div class="car-desc-list"><div class="car-item"><span class="name">宽体套件</span><span class="desc">加宽车身，视觉冲击</span></div><div class="car-item"><span class="name">尾翼</span><span class="desc">增加下压力，运动感十足</span></div><div class="car-item"><span class="name">轮毂轮胎</span><span class="desc">多辐抛边，姿态核心</span></div><div class="car-item"><span class="name">贴膜改色</span><span class="desc">改变车身颜色，保护原漆</span></div></div>
+    <p class="cn">外观改装包含宽体包围、运动尾翼、改装轮毂、车身改色贴膜。宽体加宽车身适配大尺寸轮毂，强化视觉姿态；大小尾翼根据车速提供下压力；多辐、抛边轮毂是姿态党标配；全车贴膜改色手续简单，避免喷漆损伤原厂车漆。街头改装车、游戏涂装车辆大多采用此类改装方案。</p>
+    <p class="tw">外觀改裝包含寬體、尾翼、輪轂、貼膜改色，寬體搭配大輪轂提升姿態，尾翼增加下壓力，貼膜改色便捷，街頭改裝與遊戲塗裝常用。</p>
+    <p class="en">Body kit, spoiler, custom wheels, wrap are common exterior mods for stance & aerodynamic.</p>
+    <div class="sub-title cn">3.底盘操控改装</div>
+    <div class="sub-title tw">3.底盤操控改裝</div>
+    <div class="sub-title en">3.Chassis Mod</div>
+    <div class="img-box"><div class="img-item" style="background-image:linear-gradient(135deg,#1a2a44,#2a1a55);"><span class="placeholder-text">短弹簧避震</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#2a3a44,#1a2a55);"><span class="placeholder-text">防倾杆</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#3a2a44,#2a3a55);"><span class="placeholder-text">刹车卡钳</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#4a2a44,#2a4a55);"><span class="placeholder-text">底盘强化件</span></div></div>
+    <div class="car-desc-list"><div class="car-item"><span class="name">短弹簧避震</span><span class="desc">降低重心，提升过弯姿态</span></div><div class="car-item"><span class="name">防倾杆</span><span class="desc">减少侧倾，增强稳定性</span></div><div class="car-item"><span class="name">刹车卡钳</span><span class="desc">大四活塞，制动性能提升</span></div><div class="car-item"><span class="name">底盘强化件</span><span class="desc">拉杆加强，车身刚性提升</span></div></div>
+    <p class="cn">底盘改装侧重降低车身、提升过弯稳定性，绞牙避震、短弹簧降低车身重心，防倾杆减少侧倾，大四活塞刹车提升制动性能，底盘拉杆强化车身刚性。漂移车、赛道车必须改装底盘部件，也是神力科莎、CarX手游改装重点。</p>
+    <p class="tw">底盤改裝用於降車身、提升過彎穩定，避震、防傾桿、剎車、底盤拉桿為飄移與賽車必改，也是模擬賽車遊戲核心改裝項目。</p>
+    <p class="en">Suspension, sway bar, big brake upgrade for drift & track racing.</p>
+    <div class="sub-title cn">4.内饰改装</div>
+    <div class="sub-title tw">4.內飾改裝</div>
+    <div class="sub-title en">4.Interior Mod</div>
+    <div class="img-box"><div class="img-item" style="background-image:linear-gradient(135deg,#1a2a44,#2a1a55);"><span class="placeholder-text">赛车座椅</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#2a3a44,#1a2a55);"><span class="placeholder-text">快拆方向盘</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#3a2a44,#2a3a55);"><span class="placeholder-text">仪表改装</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#4a2a44,#2a4a55);"><span class="placeholder-text">氛围灯</span></div></div>
+    <div class="car-desc-list"><div class="car-item"><span class="name">赛车座椅</span><span class="desc">桶椅，包裹性强</span></div><div class="car-item"><span class="name">快拆方向盘</span><span class="desc">便于上下车，竞技感</span></div><div class="car-item"><span class="name">仪表改装</span><span class="desc">涡轮压力表等，监控数据</span></div><div class="car-item"><span class="name">氛围灯</span><span class="desc">营造车内氛围</span></div></div>
+    <p class="cn">内饰改装分为竞技向与休闲向，竞技改装换装桶椅、快拆方向盘、涡轮压力表，方便赛道驾驶；家用改装升级氛围灯、中控大屏、真皮包覆，提升日常乘坐质感。</p>
+    <p class="tw">競技內飾改賽車椅、快拆方向盤、賽車儀表；家用改氛圍燈、中控與皮質包覆。</p>
+    <p class="en">Racing seat & steering for track, ambient light & leather for daily use.</p>
+</div>
 
-    <section class="container" id="jdm">
-        <h2 class="sec-title">JDM完整文化深度科普</h2>
-        <div class="tech-card big-text-block">
-            <p>JDM直译日本本土专供车型，90年代日本出台280匹马力君子协定，催生一大批经典性能跑车。湾岸午夜高速竞速、箱根山路漂移、富士赛道日构成完整线下汽车生态。</p>
-            <p>很多人误以为JDM只是低趴、贴纸、大尾翼，真正的JDM包含原厂件坚守、合规改装、定期养护、赛道竞技整套体系。D1GP漂移大奖赛、WRC拉力赛事持续把日系性能车推向全球。</p>
-            <p>伴随《头文字D》动漫、湾岸街机传播，JDM文化风靡国内；如今姿态、赛道、漂移、直线四种改装分支独立发展，各自拥有完整配件生态。</p>
-        </div>
-    </section>
+<!-- ===== ★ 新增：全球知名改装品牌模块 ===== -->
+<div class="box" id="tuning-brands" data-section="tuning-brands">
+    <div class="title" data-section-title="tuning-brands">
+        <span class="cn">🔧 全球知名改装品牌</span>
+        <span class="tw">🔧 全球知名改裝品牌</span>
+        <span class="en">🔧 World-Class Tuning Brands</span>
+        <span class="like-btn" data-like="tuning-brands">❤️ <span class="like-count">0</span> <span class="global-like-info">🔥 热度 <span class="hot-badge">+234</span></span></span>
+    </div>
+    <p class="cn">这些品牌是汽车改装界的标杆，从动力升级到外观套件，它们定义了性能与风格。</p>
+    <p class="tw">這些品牌是改裝界的標竿，從動力到外觀，定義了性能與風格。</p>
+    <p class="en">These brands define the tuning world – from power to styling.</p>
 
-    <section class="container" id="game">
-        <h2 class="sec-title">五大主流赛车游戏完整调校库</h2>
-        <div class="grid-row">
-            <div class="tech-card">
-                <h3>FR Legends 漂移专属调校</h3>
-                <p>✅ AE86：前倾角6.2°、后倾角7.5°、避震前硬后软、齿比偏低速扭矩，新手稳定起漂不打转<br>
-                ✅ S13：胎压前低后高、差速锁锁死85%，长距离连续漂移不掉角度<br>
-                ✅ RX-7：轻量化车身配重前移，手刹漂移、动力漂移双方案存档参数直接复制使用</p>
-                <span class="tag-cyan">漂移专用</span>
-            </div>
-            <div class="tech-card">
-                <h3>湾岸5DX+ 联机对战调校</h3>
-                <p>✅ 400马力：城市街道缠斗，转向灵敏、加速平顺<br>
-                ✅ 600马力：湾岸高速直线极速取向，尾速上限拉满<br>
-                ✅ 825满马力：弯道适度减重，避免高速推头；R34、EVO、Supra三套独立改装路线</p>
-                <span class="tag-red">街机联机</span>
-            </div>
-            <div class="tech-card">
-                <h3>头文字D激斗 山路走线参数</h3>
-                <p>秋名山上下坡、妙义、箱根、伊吕波坂全套刹车点标注<br>
-                AE86低转速升挡技巧、FD3S转子高转维持策略<br>
-                复刻拓海水沟走线，剧情模式无伤通关教程完整收录</p>
-                <span class="tag-cyan">山路走线</span>
-            </div>
-            <div class="tech-card">
-                <h3>神力科莎 Assetto Corsa</h3>
-                <p>原厂底盘MOD适配、赛道抓地力胎压精细微调<br>
-                漂移模组角度限位、转向速度、阻尼分段设置<br>
-                线上服务器专用竞技调校，圈速稳定可重复刷成绩</p>
-                <span class="tag-red">PC模拟硬核</span>
-            </div>
-            <div class="tech-card">
-                <h3>极限竞速地平线5</h3>
-                <p>日系后驱漂移车辆空气下压力调校<br>
-                公路竞速、越野拉力两套底盘预设<br>
-                AE86、S15、EVO拉力赛专属四驱动力分配方案</p>
-                <span class="tag-cyan">开放世界</span>
-            </div>
-            <div class="tech-card">
-                <h3>游戏调校通用技巧汇总</h3>
-                <p>1. 漂移：差速锁高锁止、后轮胎压降低、转向角度加大<br>
-                2. 竞速：前后配重50:50、前刹车力度略大于后轮<br>
-                3. 高速：增加下压力、缩短最终齿比提升极速<br>
-                4. 山路：小幅增加前束，入弯指向性更强</p>
-                <span class="tag-red">通用教程</span>
-            </div>
-        </div>
-    </section>
+    <div class="sub-title cn">🇩🇪 ABT Sportsline（奥迪/大众集团御用）</div>
+    <div class="sub-title tw">🇩🇪 ABT Sportsline（奧迪/福斯集團御用）</div>
+    <div class="sub-title en">🇩🇪 ABT Sportsline (Audi/VW Group)</div>
+    <div class="img-box">
+        <div class="img-item" style="background-image:linear-gradient(145deg,#1a2a44,#2a1a55);"><span class="placeholder-text">ABT 奥迪RS</span></div>
+        <div class="img-item" style="background-image:linear-gradient(145deg,#2a3a44,#1a2a55);"><span class="placeholder-text">ABT 包围</span></div>
+        <div class="img-item" style="background-image:linear-gradient(145deg,#3a2a44,#2a3a55);"><span class="placeholder-text">ABT 轮毂</span></div>
+    </div>
+    <div class="car-desc-list">
+        <div class="car-item"><span class="name">发源地</span><span class="desc">德国</span></div>
+        <div class="car-item"><span class="name">主攻方向</span><span class="desc">ECU程序、排气、外观套件、悬挂</span></div>
+        <div class="car-item"><span class="name">经典案例</span><span class="desc">奥迪RS6-R, RS4, 大众高尔夫GTI</span></div>
+        <div class="car-item"><span class="name">品牌特色</span><span class="desc">原厂升级，平衡性能与日常</span></div>
+    </div>
+    <p class="cn">ABT是大众集团合作最深入的改装品牌，专注于奥迪、大众、保时捷车型，提供从ECU升级到全套空气动力学套件，品质媲美原厂，深受德系玩家喜爱。</p>
+    <p class="tw">ABT是福斯集團深度合作品牌，專注奧迪、福斯、保時捷，ECU與空力套件品質媲美原廠。</p>
+    <p class="en">ABT, deeply linked with VW Group, offers ECU, body kits, and suspension for Audi/VW/Porsche.</p>
 
-    <section class="container" id="about">
-        <h2 class="sec-title">关于窍某汽车网</h2>
-        <div class="tech-card big-text-block">
-            <p>本站采用霓虹科技玻璃拟态风格设计，无广告、无弹窗、无外链跳转，纯静态个人汽车爱好者站点。</p>
-            <p>内容覆盖JDM车型历史、真实车辆分级改装方案、五大主流赛车游戏可直接套用的完整调校参数，面向车迷、改装玩家、游戏车手同步更新。</p>
-            <p>站点托管在GitHub Pages，你此前配置的自定义域名DNS解析生效后，即可通过专属域名永久访问；后续可以自行新增车型、扩展更多游戏调校表单、添加实拍车辆图片。</p>
-        </div>
-    </section>
+    <div class="sub-title cn">🇩🇪 Brabus（奔驰顶级改装）</div>
+    <div class="sub-title tw">🇩🇪 Brabus（賓士頂級改裝）</div>
+    <div class="sub-title en">🇩🇪 Brabus (Mercedes-Benz)</div>
+    <div class="img-box">
+        <div class="img-item" style="background-image:linear-gradient(145deg,#1a2a44,#2a1a55);"><span class="placeholder-text">Brabus 火箭</span></div>
+        <div class="img-item" style="background-image:linear-gradient(145deg,#2a3a44,#1a2a55);"><span class="placeholder-text">Brabus 900</span></div>
+        <div class="img-item" style="background-image:linear-gradient(145deg,#3a2a44,#2a3a55);"><span class="placeholder-text">碳纤宽体</span></div>
+    </div>
+    <div class="car-desc-list">
+        <div class="car-item"><span class="name">发源地</span><span class="desc">德国</span></div>
+        <div class="car-item"><span class="name">代表作</span><span class="desc">Brabus 800, Brabus Rocket 900</span></div>
+        <div class="car-item"><span class="name">技术特点</span><span class="desc">V8/V12双涡轮增压，马力可达900匹</span></div>
+        <div class="car-item"><span class="name">风格</span><span class="desc">极致性能 + 奢华碳纤维</span></div>
+    </div>
+    <p class="cn">Brabus是全球最著名的奔驰改装厂商，以暴力性能著称，将奔驰V8、V12引擎压榨至800-900马力，同时提供极致奢华的内饰和碳纤维宽体套件。</p>
+    <p class="tw">Brabus是全球最著名賓士改裝廠，以狂暴性能聞名，800-900匹馬力，奢華碳纖維寬體。</p>
+    <p class="en">Brabus – ultimate Mercedes tuning, up to 900 hp, carbon wide-body, luxury interior.</p>
 
-    <!-- 新增：联系我们板块 -->
-    <section class="container" id="contact">
-        <h2 class="sec-title">联系我们</h2>
-        <div class="tech-card big-text-block" style="text-align:center;">
-            <h3 style="margin-bottom:16px;">交流合作、内容建议、调校参数咨询均可发邮件</h3>
-            <p>邮箱地址：3880374029@qq.com</p>
-            <!-- 点击直接唤起邮箱发送窗口 -->
-            <a href="mailto:3880374029@qq.com" class="mail-link">点击一键发送邮件</a>
-        </div>
-    </section>
+    <div class="sub-title cn">🇯🇵 HKS（日本改装鼻祖）</div>
+    <div class="sub-title tw">🇯🇵 HKS（日本改裝始祖）</div>
+    <div class="sub-title en">🇯🇵 HKS (Japanese Pioneer)</div>
+    <div class="img-box">
+        <div class="img-item" style="background-image:linear-gradient(145deg,#1a2a44,#2a1a55);"><span class="placeholder-text">HKS 涡轮</span></div>
+        <div class="img-item" style="background-image:linear-gradient(145deg,#2a3a44,#1a2a55);"><span class="placeholder-text">HKS 排气</span></div>
+        <div class="img-item" style="background-image:linear-gradient(145deg,#3a2a44,#2a3a55);"><span class="placeholder-text">HKS 赛车</span></div>
+    </div>
+    <div class="car-desc-list">
+        <div class="car-item"><span class="name">发源地</span><span class="desc">日本</span></div>
+        <div class="car-item"><span class="name">核心产品</span><span class="desc">涡轮、排气、避震、ECU 程序</span></div>
+        <div class="car-item"><span class="name">经典应用</span><span class="desc">日产GT-R、丰田Supra、斯巴鲁STI</span></div>
+        <div class="car-item"><span class="name">赛事参与</span><span class="desc">D1GP、超级耐久、GT赛车</span></div>
+    </div>
+    <p class="cn">HKS成立于1973年，是日本历史最悠久的改装品牌之一，涡轮增压器、排气系统享誉全球，在JDM性能车领域拥有无可替代的地位。</p>
+    <p class="tw">HKS成立於1973年，日本老牌改裝廠，渦輪、排氣系統享譽全球，JDM性能車領域地位無可取代。</p>
+    <p class="en">HKS, founded 1973, legendary Japanese brand known for turbos, exhausts, and ECU tuning for JDM cars.</p>
 
-    <footer>
-        <p>© 2026 窍某汽车网 | JDM文化与赛车游戏调校分享站点</p>
-        <p style="margin-top:10px;">静态网页部署于 GitHub Pages，非商业用途</p>
-    </footer>
+    <div class="sub-title cn">🇺🇸 Shelby American（美式肌肉传奇）</div>
+    <div class="sub-title tw">🇺🇸 Shelby American（美式肌肉傳奇）</div>
+    <div class="sub-title en">🇺🇸 Shelby American (Muscle Icon)</div>
+    <div class="img-box">
+        <div class="img-item" style="background-image:linear-gradient(145deg,#1a2a44,#2a1a55);"><span class="placeholder-text">Shelby GT500</span></div>
+        <div class="img-item" style="background-image:linear-gradient(145deg,#2a3a44,#1a2a55);"><span class="placeholder-text">Cobra 427</span></div>
+        <div class="img-item" style="background-image:linear-gradient(145deg,#3a2a44,#2a3a55);"><span class="placeholder-text">Super Snake</span></div>
+    </div>
+    <div class="car-desc-list">
+        <div class="car-item"><span class="name">发源地</span><span class="desc">美国</span></div>
+        <div class="car-item"><span class="name">代表车型</span><span class="desc">Shelby GT350, GT500, Cobra</span></div>
+        <div class="car-item"><span class="name">创始人</span><span class="desc">卡罗尔·谢尔比</span></div>
+        <div class="car-item"><span class="name">风格</span><span class="desc">大马力V8，肌肉车精神</span></div>
+    </div>
+    <p class="cn">谢尔比是美国肌肉车的代名词，由传奇车手卡罗尔·谢尔比创立，打造了Cobra、GT350、GT500等经典车型，将福特野马推向性能巅峰。</p>
+    <p class="tw">Shelby是美國肌肉車代名詞，由傳奇車手卡羅爾·謝爾比創立，打造Cobra、GT350、GT500，將野馬推向巔峰。</p>
+    <p class="en">Shelby American – muscle car legend, founded by Carroll Shelby, famous for Cobra, GT350, and GT500.</p>
+
+    <div class="sub-title cn">🇨🇳 CMST（中国碳纤维宽体代表）</div>
+    <div class="sub-title tw">🇨🇳 CMST（中國碳纖維寬體代表）</div>
+    <div class="sub-title en">🇨🇳 CMST (Chinese Carbon Fiber)</div>
+    <div class="img-box">
+        <div class="img-item" style="background-image:linear-gradient(145deg,#1a2a44,#2a1a55);"><span class="placeholder-text">CMST 宽体</span></div>
+        <div class="img-item" style="background-image:linear-gradient(145deg,#2a3a44,#1a2a55);"><span class="placeholder-text">碳纤套件</span></div>
+        <div class="img-item" style="background-image:linear-gradient(145deg,#3a2a44,#2a3a55);"><span class="placeholder-text">国货精品</span></div>
+    </div>
+    <div class="car-desc-list">
+        <div class="car-item"><span class="name">发源地</span><span class="desc">中国</span></div>
+        <div class="car-item"><span class="name">核心产品</span><span class="desc">碳纤维宽体、包围、机盖、尾翼</span></div>
+        <div class="car-item"><span class="name">代表案例</span><span class="desc">奔驰AMG GT、宝马M4、保时捷911</span></div>
+        <div class="car-item"><span class="name">特色</span><span class="desc">性价比高，碳纤工艺成熟</span></div>
+    </div>
+    <p class="cn">CMST是国内碳纤维改装套件领军品牌，专注于宽体、包围和空气动力学部件，产品出口全球，为欧系、日系性能车提供高性价比碳纤维升级方案。</p>
+    <p class="tw">CMST是中國碳纖維改裝套件領軍品牌，寬體包圍性價比高，工藝成熟，行銷全球。</p>
+    <p class="en">CMST – Chinese carbon fiber body kit leader, provides wide-body and aero parts for global market.</p>
+
+    <p class="cn" style="margin-top:12px;">📌 更多改装品牌：Mugen（本田）、Nismo（日产）、RUF（保时捷）、Alpina（宝马）、AC Schnitzer（宝马）、Mansory（奢华改装）、Liberty Walk（宽体）、Rocket Bunny（火箭兔）…… 持续更新中。</p>
+    <p class="tw">📌 更多改裝品牌：Mugen（本田）、Nismo（日產）、RUF（保時捷）、Alpina（寶馬）、AC Schnitzer（寶馬）、Mansory（奢華）、Liberty Walk（寬體）、Rocket Bunny（火箭兔）…</p>
+    <p class="en">📌 More brands: Mugen, Nismo, RUF, Alpina, AC Schnitzer, Mansory, Liberty Walk, Rocket Bunny…</p>
+</div>
+
+<!-- ===== 5. 游戏专区 ===== -->
+<div class="box" id="game" data-section="game">
+    <div class="title" data-section-title="game">
+        <span class="cn">五、游戏专区（街机｜端游｜手游）</span><span class="tw">五、遊戲專區（街機｜端遊｜手遊）</span><span class="en">5. Game Zone</span>
+        <span class="like-btn" data-like="game">❤️ <span class="like-count">0</span> <span class="global-like-info">🔥 热度 <span class="hot-badge">+267</span></span></span>
+    </div>
+    <div class="sub-title cn">1.街机游戏分区</div>
+    <div class="sub-title tw">1.街機遊戲</div>
+    <div class="sub-title en">1.Arcade</div>
+    <div class="sub-title cn">①头文字D+进化史</div>
+    <div class="sub-title tw">①頭文字D演進史</div>
+    <div class="sub-title en">①Initial D History</div>
+    <p class="cn">进化史：头文字D街机从初代1代→2代→3代→AA→AAX→Zero，不断更新赛道、车型、剧情，基于动漫改编，是全球最火漂移街机。</p>
+    <p class="tw">頭文字D街機從一代進化至Zero，持續更新賽道車輛，為全球知名飄移街機。</p>
+    <p class="en">Initial D arcade updated from Ver.1 to Zero, famous drift arcade worldwide.</p>
+    <div class="sub-title cn">②湾岸+进化史+全车型清单+视频位</div>
+    <div class="sub-title tw">②灣岸演進史+車型清單</div>
+    <div class="sub-title en">②Wangan Midnight</div>
+    <div class="video-box">【湾岸专题视频嵌入位置】</div>
+    <p class="cn">进化史：湾岸街机进化：湾岸R→湾岸2→湾岸3→湾岸3DX→3DX+→湾岸4→湾岸5→湾岸5DX→5DX+，不断新增赛道、车辆、马力系统、故事剧情。</p>
+    <p class="tw">灣岸街機從R一路更新至5DX+，新增賽道、車輛與改裝系統。</p>
+    <p class="en">Wangan Midnight update:R→2→3→3DX→3DX+→4→5→5DX→5DX+.</p>
+    <p>湾岸全部车型总数量：总计138台</p>
+    <ul><li>日系轿车：日产Skyline全系、日产GTR(R32/R33/R34/R35)、丰田皇冠、马自达RX7/RX8、本田NSX、三菱EVO全代、斯巴鲁STI全代（合计62台）</li><li>日系跑车/小钢炮：丰田AE86、马自达MX5、日产FairladyZ全系（合计28台）</li><li>欧美车型：宝马M系列、奔驰AMG、福特野马、雪佛兰科尔维特（合计26台）</li><li>小众限定车、隐藏车、合作车辆（合计22台）</li></ul>
+    <div class="sub-title cn">③极速系列进化史</div>
+    <div class="sub-title tw">③極速系列</div>
+    <div class="sub-title en">③Speed Series</div>
+    <p class="cn">极速系列街机以直线加速、环岛竞速为主，多代迭代更新车辆与地图。</p>
+    <p class="tw">極速系列主打直線加速與環島賽車，多代更新內容。</p>
+    <p class="en">Speed arcade focus on drag race & circuit race.</p>
+    <div class="sub-title cn">2.PC端游分区</div>
+    <div class="sub-title tw">2.PC端遊</div>
+    <div class="sub-title en">2.PC Game</div>
+    <div class="sub-title cn">①神力科莎</div>
+    <p class="link">官网：<a href="https://www.assettocorsa.net/" target="_blank">https://www.assettocorsa.net/</a> | 下载地址：<a href="https://store.steampowered.com/app/244210/" target="_blank">Steam商店下载</a></p>
+    <div class="sub-title cn">②极限地平线系列</div>
+    <p class="link">官网：<a href="https://forza.net/" target="_blank">https://forza.net/</a> | 下载：<a href="https://www.xbox.com/zh-CN/games/forza-horizon-5" target="_blank">Xbox商店下载</a></p>
+    <div class="sub-title cn">额外端游5款</div>
+    <ul class="link"><li>极品飞车：官网<a href="https://www.ea.com/games/need-for-speed" target="_blank">EA官网</a> 下载<a href="https://store.steampowered.com/search/?text=Need+For+Speed" target="_blank">Steam</a></li><li>尘埃拉力赛：官网<a href="https://codemasters.com/" target="_blank">Codemasters</a> 下载<a href="https://store.steampowered.com/app/421060/" target="_blank">Steam</a></li><li>RFactor：官网<a href="https://rfactor.net/" target="_blank">rfactor.net</a> 下载<a href="https://store.steampowered.com/app/36590/" target="_blank">Steam</a></li><li>iRacing：官网<a href="https://www.iracing.com/" target="_blank">iracing.com</a> 下载<a href="https://www.iracing.com/membership/downloads/" target="_blank">官网下载</a></li><li>GT赛车：官网<a href="https://gran-turismo.com/" target="_blank">gran-turismo.com</a></li></ul>
+    <div class="sub-title cn">3.手游分区</div>
+    <div class="sub-title tw">3.手遊</div>
+    <div class="sub-title en">3.Mobile Game</div>
+    <div class="sub-title cn">①手动挡停车场</div>
+    <p class="link">官网：<a href="https://www.oppana-games.com/" target="_blank">oppana-games.com</a> | 下载：<a href="https://play.google.com/store/apps/details?id=com.oppanagames.manualgearboxcarparking" target="_blank">GooglePlay</a></p>
+    <div class="sub-title cn">②巅峰极速</div>
+    <p class="link">官网：<a href="https://speed.163.com/" target="_blank">speed.163.com</a> | 下载：<a href="https://speed.163.com/download" target="_blank">官网下载</a></p>
+    <div class="sub-title cn">③极品飞车手游</div>
+    <p class="link">官网：<a href="https://www.ea.com/games/need-for-speed-mobile" target="_blank">EA手游官网</a> | 下载：<a href="https://apps.apple.com/cn/app/need-for-speed-mobile/id1533985986" target="_blank">AppStore</a></p>
+    <div class="sub-title cn">额外手游5款</div>
+    <ul class="link"><li>CarX漂移：官网<a href="https://carx-online.com/" target="_blank">carx-online.com</a> 下载<a href="https://play.google.com/store/apps/details?id=com.carxtech.carxdriftracing2" target="_blank">GP</a></li><li>真实赛车3：官网<a href="https://ea.com/" target="_blank">EA</a> 下载<a href="https://apps.apple.com/app/real-racing-3/id556164358" target="_blank">AppStore</a></li><li>GT赛车手游：官网<a href="https://gran-turismo.com/mobile/" target="_blank">GT官网</a></li><li>狂野飙车9：官网<a href="https://gameloft.com/" target="_blank">Gameloft</a> 下载<a href="https://apps.apple.com/app/asphalt-9-legends/id1293889220" target="_blank">AppStore</a></li><li>赛车竞速模拟器：下载<a href="https://play.google.com/store/apps/details?id=com.racing.simulator" target="_blank">GP</a></li></ul>
+</div>
+
+<!-- ===== 6. 软件专区 ===== -->
+<div class="box" id="soft" data-section="soft">
+    <div class="title" data-section-title="soft">
+        <span class="cn">六、软件专区</span><span class="tw">六、軟體專區</span><span class="en">6. Software Zone</span>
+        <span class="like-btn" data-like="soft">❤️ <span class="like-count">0</span> <span class="global-like-info">🔥 热度 <span class="hot-badge">+98</span></span></span>
+    </div>
+    <ul class="link"><li>汽车改装模拟器软件：下载 <a href="https://www.modapkdown.com/" target="_blank">第三方下载站</a></li><li>车辆参数查询工具（汽车之家）：官网 <a href="https://www.autohome.com.cn/" target="_blank">autohome.com.cn</a></li><li>游戏MOD修改工具（Cheat Engine）：官网 <a href="https://cheatengine.org/" target="_blank">cheatengine.org</a></li><li>视频剪辑工具（剪映）：官网 <a href="https://www.capcut.cn/" target="_blank">capcut.cn</a></li><li>图片修图工具（PS网页版）：官网 <a href="https://photopea.com/" target="_blank">photopea.com</a></li></ul>
+    <p class="cn">每个软件预留介绍、下载链接位置，后续补充详情。</p>
+    <p class="tw">各軟體預留介紹與下載連結位，後續補充內容。</p>
+    <p class="en">Reserve space for software intro & download link.</p>
+</div>
+
+<!-- ===== 7. 汽车赛事专区 ===== -->
+<div class="box" id="race" data-section="race">
+    <div class="title" data-section-title="race">
+        <span class="cn">七、汽车赛事专区（全球顶级赛事品牌介绍）</span><span class="tw">七、汽車賽事專區（全球頂級賽事品牌介紹）</span><span class="en">7. Global Top Racing Brand Zone</span>
+        <span class="like-btn" data-like="race">❤️ <span class="like-count">0</span> <span class="global-like-info">🔥 热度 <span class="hot-badge">+189</span></span></span>
+    </div>
+    <div class="sub-title cn">1.F1世界一级方程式锦标赛</div>
+    <div class="sub-title tw">1.F1世界一級方程式錦標賽</div>
+    <div class="sub-title en">1.FIA Formula 1 World Championship</div>
+    <div class="img-box"><div class="img-item" style="background-image:linear-gradient(135deg,#1a2a44,#2a1a55);"><span class="placeholder-text">F1大奖赛</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#2a3a44,#1a2a55);"><span class="placeholder-text">法拉利厂队</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#3a2a44,#2a3a55);"><span class="placeholder-text">梅赛德斯车队</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#4a2a44,#2a4a55);"><span class="placeholder-text">摩纳哥赛道</span></div></div>
+    <div class="car-desc-list"><div class="car-item"><span class="name">F1大奖赛</span><span class="desc">全球顶尖单座方程式</span></div><div class="car-item"><span class="name">法拉利厂队</span><span class="desc">历史悠久，红色传奇</span></div><div class="car-item"><span class="name">梅赛德斯车队</span><span class="desc">混动时代霸主</span></div><div class="car-item"><span class="name">摩纳哥赛道</span><span class="desc">街道赛，经典之站</span></div></div>
+    <p class="cn">F1是国际汽联旗下最高级别单座开轮赛车赛事，1950年正式创办，被称为赛车界皇冠。全年全球二十余站巡回大奖赛，使用1.6T混动方程式赛车，汇聚法拉利、梅赛德斯、红牛、迈凯伦等全球顶级车企厂队。赛事兼具尖端汽车科技展示与全球顶级商业赛事属性，车手与车队分开争夺年度总冠军，银石、摩纳哥、阿布扎比为经典标志性赛道，每年数十亿观众收看转播，是全球知名度最高的汽车赛事品牌。</p>
+    <p class="tw">F1為國際汽聯最高等級單座賽事，1950年創辦，被譽為賽車皇冠。每年全球二十餘站巡迴，法拉利、賓士、紅牛等大廠參賽，使用混動方程式賽車，分車手與車隊總冠軍，銀石、摩納哥為經典賽道，全球收視量常年第一。</p>
+    <p class="en">F1 founded 1950, top single-seat racing series. Ferrari, Mercedes, Red Bull factory teams compete worldwide with hybrid formula cars, famous tracks include Silverstone & Monaco, the most famous motorsport brand globally.</p>
+    <a href="https://www.formula1.com/" target="_blank" class="official-url">官方网站</a>
+    <div class="sub-title cn">2.WRC世界拉力锦标赛</div>
+    <div class="sub-title tw">2.WRC世界拉力錦標賽</div>
+    <div class="sub-title en">2.WRC World Rally Championship</div>
+    <div class="img-box"><div class="img-item" style="background-image:linear-gradient(135deg,#1a2a44,#2a1a55);"><span class="placeholder-text">雪地拉力赛</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#2a3a44,#1a2a55);"><span class="placeholder-text">丰田厂队</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#3a2a44,#2a3a55);"><span class="placeholder-text">砂石赛段</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#4a2a44,#2a4a55);"><span class="placeholder-text">双人车手组</span></div></div>
+    <div class="car-desc-list"><div class="car-item"><span class="name">雪地拉力赛</span><span class="desc">冰雪路面，挑战极限</span></div><div class="car-item"><span class="name">丰田厂队</span><span class="desc">Yaris WRC，实力强大</span></div><div class="car-item"><span class="name">砂石赛段</span><span class="desc">非铺装路面，飞沙走石</span></div><div class="car-item"><span class="name">双人车手组</span><span class="desc">车手+领航员配合</span></div></div>
+    <p class="cn">1973年创立的顶级拉力赛事，以开放公共道路多路况竞速为特色，包含柏油、雪地、砂石、泥泞各类路面，赛车基于市售量产车改装，采用车手+领航员双人组队模式。丰田、现代、雪铁龙为本赛事老牌厂队，B组时代留下无数传奇赛车，如今采用混动R1组别赛车，兼顾越野竞速乐趣与环保标准，是民用改装车文化影响力最大的赛事品牌。</p>
+    <p class="tw">1973年開辦拉力頂級賽事，跑開放公共道路，雪地砂石多種路況，車輛由量產車改裝，車手搭配領航員，豐田、雪鐵龍長年參賽，改裝愛好者關注度極高。</p>
+    <p class="en">WRC started 1973, rally race on public roads with mixed surfaces, modified production cars, co-driver system, Toyota & Hyundai main factory entries, huge influence on car tuning culture.</p>
+    <a href="https://www.wrc.com/" target="_blank" class="official-url">官方网站</a>
+    <div class="sub-title cn">3.勒芒24小时耐力赛(WEC)</div>
+    <div class="sub-title tw">3.利曼24小時耐久賽(WEC)</div>
+    <div class="sub-title en">3.Le Mans 24 Hours(WEC)</div>
+    <div class="img-box"><div class="img-item" style="background-image:linear-gradient(135deg,#1a2a44,#2a1a55);"><span class="placeholder-text">勒芒萨尔特赛道</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#2a3a44,#1a2a55);"><span class="placeholder-text">保时捷厂车</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#3a2a44,#2a3a55);"><span class="placeholder-text">丰田Hypercar</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#4a2a44,#2a4a55);"><span class="placeholder-text">夜间耐力竞速</span></div></div>
+    <div class="car-desc-list"><div class="car-item"><span class="name">勒芒萨尔特赛道</span><span class="desc">13.6km，高速耐力</span></div><div class="car-item"><span class="name">保时捷厂车</span><span class="desc">919 Hybrid，传奇战车</span></div><div class="car-item"><span class="name">丰田Hypercar</span><span class="desc">GR010，混动旗舰</span></div><div class="car-item"><span class="name">夜间耐力竞速</span><span class="desc">24小时不眠不休</span></div></div>
+    <p class="cn">1923年诞生的百年耐力赛事，赛道全长13.6公里，赛车不间断连续奔跑24小时，多名车手轮换驾驶，考验车辆可靠性、燃油经济性与车队维修效率。保时捷、丰田、奥迪、法拉利曾长期统治赛场，Hypercar组别汇集各大厂商顶尖混动原型车，是车企展示耐久与混动技术核心赛事品牌。</p>
+    <p class="tw">1923年百年耐久賽，賽車24小時不間斷行駛，多名車手輪流，保時捷、豐田長年奪冠，廠商用此賽測試長途動力與混動技術。</p>
+    <p class="en">Le Mans 24h since 1923, 24-hour non-stop endurance race, Porsche & Toyota dominant brands, core testbed for hybrid & durable powertrain tech.</p>
+    <a href="https://www.fiawec.com/" target="_blank" class="official-url">官方网站</a>
+    <div class="sub-title cn">4.达喀尔拉力赛</div>
+    <div class="sub-title tw">4.達卡拉力賽</div>
+    <div class="sub-title en">4.Dakar Rally</div>
+    <div class="img-box"><div class="img-item" style="background-image:linear-gradient(135deg,#1a2a44,#2a1a55);"><span class="placeholder-text">沙漠越野赛车</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#2a3a44,#1a2a55);"><span class="placeholder-text">皮卡组别</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#3a2a44,#2a3a55);"><span class="placeholder-text">长距离赛段</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#4a2a44,#2a4a55);"><span class="placeholder-text">越野卡车组</span></div></div>
+    <div class="car-desc-list"><div class="car-item"><span class="name">沙漠越野赛车</span><span class="desc">穿越沙丘，极致探险</span></div><div class="car-item"><span class="name">皮卡组别</span><span class="desc">丰田Hilux等参赛</span></div><div class="car-item"><span class="name">长距离赛段</span><span class="desc">每天数百公里</span></div><div class="car-item"><span class="name">越野卡车组</span><span class="desc">重型卡车，别样风景</span></div></div>
+    <p class="cn">全球顶级跨洲长距离越野拉力赛事，每年穿越沙漠、戈壁、山地极端路况，分汽车、摩托、卡车三大组别，不限制原厂大幅改装，主打极限越野探险属性。丰田海拉克斯、三菱帕杰罗、福特皮卡常年征战，是越野爱好者心中标志性赛事品牌。</p>
+    <p class="tw">橫跨荒漠戈壁長距離越野賽，分汽車、摩托、卡車組，改裝幅度無限制，豐田Hilux、三菱帕傑羅為賽場常客。</p>
+    <p class="en">Dakar cross-desert off-road rally, car/motor/truck classes, extreme terrain, famous for Hilux & Pajero off-road vehicles.</p>
+    <a href="https://www.dakar.com/" target="_blank" class="official-url">官方网站</a>
+    <div class="sub-title cn">5.D1GP日本漂移大奖赛</div>
+    <div class="sub-title tw">5.D1GP日本漂移大獎賽</div>
+    <div class="sub-title en">5.D1 Grand Prix Drift</div>
+    <div class="img-box"><div class="img-item" style="background-image:linear-gradient(135deg,#1a2a44,#2a1a55);"><span class="placeholder-text">JDM漂移赛车</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#2a3a44,#1a2a55);"><span class="placeholder-text">双车追走</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#3a2a44,#2a3a55);"><span class="placeholder-text">AE86参赛车</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#4a2a44,#2a4a55);"><span class="placeholder-text">漂移拉花涂装</span></div></div>
+    <div class="car-desc-list"><div class="car-item"><span class="name">JDM漂移赛车</span><span class="desc">后驱改装，日本漂移</span></div><div class="car-item"><span class="name">双车追走</span><span class="desc">前车后车同步漂移</span></div><div class="car-item"><span class="name">AE86参赛车</span><span class="desc">经典漂移战车</span></div><div class="car-item"><span class="name">漂移拉花涂装</span><span class="desc">炫酷视觉，个性标识</span></div></div>
+    <p class="cn">全球最权威专业漂移赛事品牌，2001年在日本创立，以JDM改装后驱跑车为主，采用单车单走打分、双车追走淘汰制，评判角度、速度、流畅度。日产、丰田、马自达多款经典漂移战车诞生于此赛事，直接带动全球漂移改装文化发展。</p>
+    <p class="tw">2001年日本創立專業漂移賽，以後驅JDM改裝車參賽，雙車追走淘汰，帶動全球漂移改裝風潮。</p>
+    <p class="en">D1GP top professional drifting series from Japan, RWD JDM modified cars, chase battle format, global drift culture origin brand.</p>
+    <a href="https://d1gp.com/" target="_blank" class="official-url">官方网站</a>
+</div>
+
+<!-- ===== ★ 新增：知名车手模块 ===== -->
+<div class="box" id="race-drivers" data-section="race-drivers">
+    <div class="title" data-section-title="race-drivers">
+        <span class="cn">🏁 知名赛车手巡礼</span>
+        <span class="tw">🏁 知名賽車手巡禮</span>
+        <span class="en">🏁 Legendary Racing Drivers</span>
+        <span class="like-btn" data-like="race-drivers">❤️ <span class="like-count">0</span> <span class="global-like-info">🔥 热度 <span class="hot-badge">+156</span></span></span>
+    </div>
+    <p class="cn">从F1到WRC，从勒芒到漂移赛场，这些车手用速度与勇气书写传奇。以下为全球车迷公认的殿堂级车手（部分）。</p>
+    <p class="tw">從F1到WRC，從利曼到飄移賽場，這些車手用速度與勇氣寫下傳奇。</p>
+    <p class="en">From F1 to WRC, Le Mans to drifting – these drivers are legends.</p>
+
+    <div class="sub-title cn">🇫🇮 F1 传奇：基米·莱科宁 (Kimi Räikkönen)</div>
+    <div class="sub-title tw">🇫🇮 F1 傳奇：奇米·雷克南</div>
+    <div class="sub-title en">🇫🇮 F1 Legend: Kimi Räikkönen</div>
+    <div class="img-box">
+        <div class="img-item" style="background-image:linear-gradient(145deg,#1a2a44,#2a1a55);"><span class="placeholder-text">莱科宁 冰人</span></div>
+        <div class="img-item" style="background-image:linear-gradient(145deg,#2a3a44,#1a2a55);"><span class="placeholder-text">2007 WDC</span></div>
+        <div class="img-item" style="background-image:linear-gradient(145deg,#3a2a44,#2a3a55);"><span class="placeholder-text">法拉利时代</span></div>
+    </div>
+    <div class="car-desc-list">
+        <div class="car-item"><span class="name">国籍</span><span class="desc">芬兰</span></div>
+        <div class="car-item"><span class="name">F1 冠军</span><span class="desc">2007 世界冠军</span></div>
+        <div class="car-item"><span class="name">经典语录</span><span class="desc">“Leave me alone, I know what I'm doing.”</span></div>
+        <div class="car-item"><span class="name">效力车队</span><span class="desc">迈凯伦、法拉利、莲花、阿尔法·罗密欧</span></div>
+    </div>
+    <p class="cn">莱科宁以冷静、天赋和纯粹速度著称，2007年为法拉利夺得世界冠军，生涯获得21场分站胜利。他是F1最后一位自然吸气V10时代冠军，也是“冰人”精神的化身。</p>
+    <p class="tw">雷克南以冷靜與天賦聞名，2007年為法拉利奪冠，生涯21勝，是V10時代最後一位冠軍。</p>
+    <p class="en">Kimi, the “Iceman”, 2007 F1 champion with Ferrari, known for pure speed and coolness.</p>
+
+    <div class="sub-title cn">🇫🇷 WRC 传奇：塞巴斯蒂安·勒布 (Sébastien Loeb)</div>
+    <div class="sub-title tw">🇫🇷 WRC 傳奇：塞巴斯蒂安·勒布</div>
+    <div class="sub-title en">🇫🇷 WRC Legend: Sébastien Loeb</div>
+    <div class="img-box">
+        <div class="img-item" style="background-image:linear-gradient(145deg,#1a2a44,#2a1a55);"><span class="placeholder-text">勒布 雪铁龙</span></div>
+        <div class="img-item" style="background-image:linear-gradient(145deg,#2a3a44,#1a2a55);"><span class="placeholder-text">9冠王</span></div>
+        <div class="img-item" style="background-image:linear-gradient(145deg,#3a2a44,#2a3a55);"><span class="placeholder-text">WRC 霸主</span></div>
+    </div>
+    <div class="car-desc-list">
+        <div class="car-item"><span class="name">国籍</span><span class="desc">法国</span></div>
+        <div class="car-item"><span class="name">WRC 冠军</span><span class="desc">9次 世界冠军 (2004-2012)</span></div>
+        <div class="car-item"><span class="name">经典战绩</span><span class="desc">78场分站胜利</span></div>
+        <div class="car-item"><span class="name">代表车队</span><span class="desc">雪铁龙 WRT</span></div>
+    </div>
+    <p class="cn">勒布是WRC历史上最成功的车手，9次年度总冠军，78场分站胜利，统治拉力赛场近十年。他的驾驶风格精准而激进，将雪铁龙C4 WRC推向巅峰。</p>
+    <p class="tw">勒布是WRC史上最成功車手，9屆冠軍、78勝，統治拉力賽近十年，駕駛風格精準而激進。</p>
+    <p class="en">Loeb is the most successful WRC driver with 9 titles and 78 wins, dominated rally in 2000s.</p>
+
+    <div class="sub-title cn">🇩🇪 勒芒传奇：汤姆·克里斯滕森 (Tom Kristensen)</div>
+    <div class="sub-title tw">🇩🇪 利曼傳奇：湯姆·克里斯滕森</div>
+    <div class="sub-title en">🇩🇪 Le Mans Legend: Tom Kristensen</div>
+    <div class="img-box">
+        <div class="img-item" style="background-image:linear-gradient(145deg,#1a2a44,#2a1a55);"><span class="placeholder-text">克里斯滕森</span></div>
+        <div class="img-item" style="background-image:linear-gradient(145deg,#2a3a44,#1a2a55);"><span class="placeholder-text">勒芒9冠</span></div>
+        <div class="img-item" style="background-image:linear-gradient(145deg,#3a2a44,#2a3a55);"><span class="placeholder-text">奥迪 R8</span></div>
+    </div>
+    <div class="car-desc-list">
+        <div class="car-item"><span class="name">国籍</span><span class="desc">丹麦</span></div>
+        <div class="car-item"><span class="name">勒芒冠军</span><span class="desc">9次 全场冠军 (1997, 2000-2005, 2008, 2013)</span></div>
+        <div class="car-item"><span class="name">代表车型</span><span class="desc">奥迪 R8 LMP, R10 TDI, R18</span></div>
+        <div class="car-item"><span class="name">绰号</span><span class="desc">“勒芒先生”</span></div>
+    </div>
+    <p class="cn">克里斯滕森是勒芒24小时耐力赛史上夺冠次数最多的车手，9次全场冠军。他尤其以奥迪R8和R10 TDI柴油赛车著称，完美诠释了耐力赛的精髓。</p>
+    <p class="tw">克里斯滕森是利曼史上奪冠最多車手，9次全場冠軍，完美詮釋耐力賽精神。</p>
+    <p class="en">“Mr. Le Mans” – 9 overall wins, most in history, dominated with Audi R8 and R10 TDI.</p>
+
+    <div class="sub-title cn">🇯🇵 D1GP 漂移之王：土屋圭市 (Keiichi Tsuchiya)</div>
+    <div class="sub-title tw">🇯🇵 D1GP 飄移之王：土屋圭市</div>
+    <div class="sub-title en">🇯🇵 Drift King: Keiichi Tsuchiya</div>
+    <div class="img-box">
+        <div class="img-item" style="background-image:linear-gradient(145deg,#1a2a44,#2a1a55);"><span class="placeholder-text">土屋圭市</span></div>
+        <div class="img-item" style="background-image:linear-gradient(145deg,#2a3a44,#1a2a55);"><span class="placeholder-text">AE86 漂移</span></div>
+        <div class="img-item" style="background-image:linear-gradient(145deg,#3a2a44,#2a3a55);"><span class="placeholder-text">漂移教父</span></div>
+    </div>
+    <div class="car-desc-list">
+        <div class="car-item"><span class="name">国籍</span><span class="desc">日本</span></div>
+        <div class="car-item"><span class="name">主要成就</span><span class="desc">D1GP 创始人/总监，漂移文化推广者</span></div>
+        <div class="car-item"><span class="name">标志车型</span><span class="desc">AE86 Sprinter Trueno</span></div>
+        <div class="car-item"><span class="name">影响</span><span class="desc">《头文字D》原型及监修</span></div>
+    </div>
+    <p class="cn">土屋圭市被誉为“漂移之王”，是D1GP大奖赛的创始人之一，也是《头文字D》漫画的监修与原型。他将漂移从山路技巧发展为正规赛事，AE86是他最经典的战车。</p>
+    <p class="tw">土屋圭市被譽為「飄移之王」，創辦D1GP賽事，也是《頭文字D》監修，AE86為其標誌。</p>
+    <p class="en">Drift King, co-founder of D1GP, AE86 driver, and supervisor of Initial D.</p>
+
+    <p class="cn" style="margin-top:12px;">📌 更多传奇车手：F1（埃尔顿·塞纳、迈克尔·舒马赫、刘易斯·汉密尔顿）、WRC（科林·麦克雷、理查德·伯恩斯）、耐力赛（杰基·伊克斯、德里克·贝尔）、漂移（齐藤太吾、川畑真人）…… 后续持续更新。</p>
+    <p class="tw">📌 更多傳奇車手：F1（洗拿、舒馬克、漢米爾頓）、WRC（麥克雷、伯恩斯）、耐力賽（伊克斯、貝爾）、漂移（齊藤太吾、川畑真人）… 後續持續更新。</p>
+    <p class="en">📌 More legends: Senna, Schumacher, Hamilton, McRae, Burns, Ickx, Bell, Saito, Kawabata…</p>
+</div>
+
+<!-- ===== 8. 车模收藏专区 ===== -->
+<div class="box" id="model" data-section="model">
+    <div class="title" data-section-title="model">
+        <span class="cn">八、车模收藏专区（全球知名车模品牌介绍）</span><span class="tw">八、車模收藏專區（全球知名車模品牌介紹）</span><span class="en">8. Car Model Famous Brand Zone</span>
+        <span class="like-btn" data-like="model">❤️ <span class="like-count">0</span> <span class="global-like-info">🔥 热度 <span class="hot-badge">+223</span></span></span>
+    </div>
+    <div class="sub-title cn">1.Tomica 多美卡（日本）</div>
+    <div class="sub-title tw">1.Tomica多美卡（日本）</div>
+    <div class="sub-title en">1.Tomica Japan</div>
+    <div class="img-box"><div class="img-item" style="background-image:linear-gradient(135deg,#1a2a44,#2a1a55);"><span class="placeholder-text">多美卡红白盒</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#2a3a44,#1a2a55);"><span class="placeholder-text">多美卡黑盒Premium</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#3a2a44,#2a3a55);"><span class="placeholder-text">1:64日系小车</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#4a2a44,#2a4a55);"><span class="placeholder-text">多美卡限定车</span></div></div>
+    <div class="car-desc-list"><div class="car-item"><span class="name">红白盒</span><span class="desc">基础系列，性价比高</span></div><div class="car-item"><span class="name">黑盒Premium</span><span class="desc">收藏级，细节更好</span></div><div class="car-item"><span class="name">1:64日系小车</span><span class="desc">还原真实车型</span></div><div class="car-item"><span class="name">限定车</span><span class="desc">稀少，收藏价值高</span></div></div>
+    <p class="cn">日本多美旗下经典合金小车品牌，1953年创立，主打1:64小比例合金车模，分为红白普通盒、黑盒Premium收藏线。还原丰田、日产、本田全系日系车型，自带避震、可开门结构，性价比极高，兼顾儿童把玩与成人桌面收藏，全球普及率最高小车模品牌。</p>
+    <p class="tw">日本多美1953年創立，主打1:64合金小車，分普通紅白盒與收藏黑盒，帶避震可開門，日系車型齊全，大人小孩都適合收藏。</p>
+    <p class="en">Tomica founded 1953 Japan, 1/64 diecast cars, basic red box & premium black line, suspension & open doors, most popular small scale model brand worldwide.</p>
+    <a href="https://www.tomy.cn/" target="_blank" class="official-url">中国官网</a>
+    <div class="sub-title cn">2.Kyosho 京商（日本高端）</div>
+    <div class="sub-title tw">2.Kyosho京商（日本高端）</div>
+    <div class="sub-title en">2.Kyosho High-end Japan</div>
+    <div class="img-box"><div class="img-item" style="background-image:linear-gradient(135deg,#1a2a44,#2a1a55);"><span class="placeholder-text">1:18全开合金车</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#2a3a44,#1a2a55);"><span class="placeholder-text">京商RC漂移车</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#3a2a44,#2a3a55);"><span class="placeholder-text">JDM收藏车</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#4a2a44,#2a4a55);"><span class="placeholder-text">精细内饰</span></div></div>
+    <div class="car-desc-list"><div class="car-item"><span class="name">1:18全开</span><span class="desc">全车门可开，细节极致</span></div><div class="car-item"><span class="name">RC漂移车</span><span class="desc">专业遥控漂移模型</span></div><div class="car-item"><span class="name">JDM收藏车</span><span class="desc">日系经典车模</span></div><div class="car-item"><span class="name">精细内饰</span><span class="desc">座椅仪表真实复刻</span></div></div>
+    <p class="cn">日本高端模型品牌，同时生产静态收藏车模与专业RC遥控漂移车。静态1:18全开合金内饰、发动机细节极致还原；RC漂移底盘复刻真车传动，改装配件丰富，高端静态与动态模型双标杆。</p>
+    <p class="tw">日本高端品牌，靜態1:18全開合金細節拉滿，同時生產專業RC漂移遙控車，改裝配件豐富，資深藏家首選。</p>
+    <p class="en">Kyosho high-end static 1/18 full open models & professional RC drift cars, ultra detailed interior & engine, top pick for serious collectors.</p>
+    <a href="https://www.kyosho.com/" target="_blank" class="official-url">官方网站</a>
+    <div class="sub-title cn">3.拓意 XCARTOYS（国产）</div>
+    <div class="sub-title tw">3.拓意XCARTOYS（國產）</div>
+    <div class="sub-title en">3.XCARTOYS China</div>
+    <div class="img-box"><div class="img-item" style="background-image:linear-gradient(135deg,#1a2a44,#2a1a55);"><span class="placeholder-text">比亚迪车模</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#2a3a44,#1a2a55);"><span class="placeholder-text">老桑塔纳</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#3a2a44,#2a3a55);"><span class="placeholder-text">解放卡车</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#4a2a44,#2a4a55);"><span class="placeholder-text">橙盒系列</span></div></div>
+    <div class="car-desc-list"><div class="car-item"><span class="name">比亚迪车模</span><span class="desc">汉、唐等新能源车型</span></div><div class="car-item"><span class="name">老桑塔纳</span><span class="desc">经典国产神车</span></div><div class="car-item"><span class="name">解放卡车</span><span class="desc">国产卡车历史</span></div><div class="car-item"><span class="name">橙盒系列</span><span class="desc">主打性价比</span></div></div>
+    <p class="cn">国内本土知名1:64合金车模品牌，复刻老桑塔纳、解放、比亚迪、蔚来等国产燃油与新能源车，橙盒做工稳定、价格亲民，填补国产小车模空白，本土汽车文化代表品牌。</p>
+    <p class="tw">國產1:64車模代表，專做中國本土車型，老桑塔納、解放卡車、新能車全覆蓋，平價適合國內玩家收藏。</p>
+    <p class="en">XCARTOYS Chinese domestic diecast brand, replicate Chinese classic & EV vehicles, affordable orange box line, pioneer of local car culture models.</p>
+    <a href="https://www.xcartoys.com/" target="_blank" class="official-url">官方网站</a>
+    <div class="sub-title cn">4.Maisto 美驰图</div>
+    <div class="sub-title tw">4.Maisto美馳圖</div>
+    <div class="sub-title en">4.Maisto Entry</div>
+    <div class="img-box"><div class="img-item" style="background-image:linear-gradient(135deg,#1a2a44,#2a1a55);"><span class="placeholder-text">1:18超跑</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#2a3a44,#1a2a55);"><span class="placeholder-text">美式肌肉车</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#3a2a44,#2a3a55);"><span class="placeholder-text">入门套装</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#4a2a44,#2a4a55);"><span class="placeholder-text">平价合金车</span></div></div>
+    <div class="car-desc-list"><div class="car-item"><span class="name">1:18超跑</span><span class="desc">法拉利、兰博基尼等</span></div><div class="car-item"><span class="name">美式肌肉车</span><span class="desc">野马、科迈罗</span></div><div class="car-item"><span class="name">入门套装</span><span class="desc">多车套装，适合新手</span></div><div class="car-item"><span class="name">平价合金车</span><span class="desc">价格亲民，做工尚可</span></div></div>
+    <p class="cn">美驰图覆盖1:18/1:24/1:43多比例平价合金，法拉利、福特、雪佛兰款式齐全，全车多开门，新手入门首选收藏品牌。</p>
+    <p class="tw">平價入門合金品牌，多種比例可選，歐美超跑肌肉車款式眾多，適合剛入坑收藏者。</p>
+    <p class="en">Maisto global entry-level diecast brand, multiple scales, affordable price, wide US & European supercar lineup for new collectors.</p>
+    <a href="https://www.maisto.com/" target="_blank" class="official-url">官方网站</a>
+    <div class="sub-title cn">5.Hot Wheels 风火轮</div>
+    <div class="sub-title tw">5.Hot Wheels風火輪</div>
+    <div class="sub-title en">5.Hot Wheels Mattel</div>
+    <div class="img-box"><div class="img-item" style="background-image:linear-gradient(135deg,#1a2a44,#2a1a55);"><span class="placeholder-text">风火轮普卡</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#2a3a44,#1a2a55);"><span class="placeholder-text">汽车文化系列</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#3a2a44,#2a3a55);"><span class="placeholder-text">赛道改装小车</span></div><div class="img-item" style="background-image:linear-gradient(135deg,#4a2a44,#2a4a55);"><span class="placeholder-text">限量铁盒</span></div></div>
+    <div class="car-desc-list"><div class="car-item"><span class="name">普卡</span><span class="desc">基础款，便宜量大</span></div><div class="car-item"><span class="name">汽车文化系列</span><span class="desc">复刻改装/赛事车</span></div><div class="car-item"><span class="name">赛道改装小车</span><span class="desc">赛道主题，性能范</span></div><div class="car-item"><span class="name">限量铁盒</span><span class="desc">特殊包装，收藏价值</span></div></div>
+    <p class="cn">美泰旗下全球流通小车，1966年诞生，普卡平价海量，高端汽车文化复刻改装、赛事、JDM小车，运动造型，全球玩家收藏热门。</p>
+    <p class="tw">美國美泰品牌，平價普卡隨處可買，高端汽車文化線還原經典改裝賽車，全球流通量第一。</p>
+    <p class="en">Hot Wheels Mattel US brand since 1966, mass produced cheap base cars, premium Car Culture line for modified & race replicas, worldwide popular.</p>
+    <a href="https://hotwheels.mattel.com/" target="_blank" class="official-url">官方网站</a>
+</div>
+
+<!-- ===== 9. 图库投稿规则 ===== -->
+<div class="box" id="gallery" data-section="gallery">
+    <div class="title" data-section-title="gallery">
+        <span class="cn">九、图库投稿规则</span><span class="tw">九、圖庫投稿規則</span><span class="en">9. Gallery Submission Rules</span>
+        <span class="like-btn" data-like="gallery">❤️ <span class="like-count">0</span> <span class="global-like-info">🔥 热度 <span class="hot-badge">+72</span></span></span>
+    </div>
+    <p class="cn">欢迎投递汽车摄影、改装作品、赛事现场、车模开箱等原创图片。要求：高清无水印，每张附简短说明。投稿即代表授权本站展示，并有机会获得周边礼品。投稿邮箱：<a href="mailto:3880374029@qq.com" style="color:#0cf;">3880374029@qq.com</a>，邮件标题注明“图库投稿”。</p>
+    <p class="tw">歡迎投遞汽車攝影、改裝作品、賽事現場、車模開箱等原創圖片。要求：高清無浮水印，每張附簡短說明。投稿郵箱：<a href="mailto:3880374029@qq.com" style="color:#0cf;">3880374029@qq.com</a>。</p>
+    <p class="en">Submit original car photos, tuning, race events, model unboxing. High-res, no watermark. Email: <a href="mailto:3880374029@qq.com" style="color:#0cf;">3880374029@qq.com</a>.</p>
+</div>
+
+<!-- ===== 10. 联系我们 ===== -->
+<div class="box" id="contact" data-section="contact">
+    <div class="title" data-section-title="contact">
+        <span class="cn">十、联系我们</span><span class="tw">十、聯絡我們</span><span class="en">10. Contact Us</span>
+        <span class="like-btn" data-like="contact">❤️ <span class="like-count">0</span> <span class="global-like-info">🔥 热度 <span class="hot-badge">+134</span></span></span>
+    </div>
+    <ul class="link">
+        <li class="cn">QQ汽车交流群：964120129</li>
+        <li class="tw">QQ汽車交流群：964120129</li>
+        <li class="en">QQ Auto Group: 964120129</li>
+        <li class="cn">电子邮箱：<a href="mailto:3880374029@qq.com">3880374029@qq.com</a></li>
+        <li class="tw">電子郵箱：<a href="mailto:3880374029@qq.com">3880374029@qq.com</a></li>
+        <li class="en">Email：<a href="mailto:3880374029@qq.com">3880374029@qq.com</a></li>
+        <li class="cn">抖音账号1：20141121lDY</li>
+        <li class="tw">抖音帳號1：20141121lDY</li>
+        <li class="en">Douyin 1：20141121lDY</li>
+        <li class="cn">抖音账号2：东方93464033235</li>
+        <li class="tw">抖音帳號2：東方93464033235</li>
+        <li class="en">Douyin 2：Dongfang 93464033235</li>
+        <li class="cn">TikTok账号：mr.qiaomou</li>
+        <li class="tw">TikTok帳號：mr.qiaomou</li>
+        <li class="en">TikTok：mr.qiaomou</li>
+        <li class="cn">网站名称：窍谋汽车游戏网</li>
+        <li class="tw">網站名稱：竅謀汽車遊戲網</li>
+        <li class="en">Website Name：Qiaomou Auto & Game</li>
+    </ul>
+    <p class="cn">加入QQ群可交流改装、游戏、赛事、车相关内容，改装咨询、资源合作、素材投稿均可联系。</p>
+    <p class="tw">加入QQ群可交流改裝、遊戲、賽事、車模相關內容，改裝諮詢、資源合作、投稿均可聯繫。</p>
+    <p class="en">Join QQ group to discuss tuning, racing games & scale models, business & submission contact above.</p>
+</div>
+
+<!-- ===== 11. 实用转换工具 ===== -->
+<div class="box" id="converter" data-section="converter">
+    <div class="title" data-section-title="converter">
+        <span class="cn">实用转换工具</span><span class="tw">實用轉換工具</span><span class="en">Converter Tool</span>
+        <span class="like-btn" data-like="converter">❤️ <span class="like-count">0</span> <span class="global-like-info">🔥 热度 <span class="hot-badge">+45</span></span></span>
+    </div>
+    <div class="converter-tool">
+        <div class="input-group"><span>油耗</span><input type="number" id="fuelInput" value="8" step="0.1" min="0"><select id="fuelFrom"><option value="l100">L/100km</option><option value="mpg">MPG</option></select><span>→</span><span id="fuelResult" class="result">29.4 MPG</span></div>
+        <div class="input-group"><span>速度</span><input type="number" id="speedInput" value="100" step="1" min="0"><select id="speedFrom"><option value="kmh">km/h</option><option value="mph">mph</option></select><span>→</span><span id="speedResult" class="result">62.1 mph</span></div>
+    </div>
+    <p style="text-indent:0;font-size:14px;color:#88aacc;">输入数值，自动转换。油耗: L/100km ↔ MPG (美制) ; 速度: km/h ↔ mph</p>
+</div>
+
+<!-- ===== 页脚 ===== -->
+<footer>
+    <div class="cn">窍谋汽车游戏网 ©2026</div>
+    <div class="tw">竅謀汽車遊戲網 ©2026</div>
+    <div class="en">Qiaomou Auto Game ©2026</div>
+</footer>
+
+<a href="#top"><button class="top-btn" id="topBtn">↑</button></a>
 
 <script>
-// 全局点击波纹特效代码
-document.body.addEventListener('click', function(e){
-    let ripple = document.createElement('span');
-    ripple.classList.add('click-ripple');
-    // 波纹大小
-    let size = 40;
-    ripple.style.width = ripple.style.height = size + 'px';
-    // 定位到点击鼠标位置
-    ripple.style.left = e.clientX - size/2 + 'px';
-    ripple.style.top = e.clientY - size/2 + 'px';
-    document.body.appendChild(ripple);
-    // 动画结束自动删除元素
-    setTimeout(()=>{
-        ripple.remove();
-    },600);
-})
+    // ========== 公告栏关闭 ==========
+    (function() {
+        const ann = document.getElementById('announcement');
+        const closeBtn = document.getElementById('closeAnnouncement');
+        if (!ann || !closeBtn) return;
+        const today = new Date().toDateString();
+        const closed = localStorage.getItem('announcement_closed');
+        if (closed === today) ann.style.display = 'none';
+        closeBtn.addEventListener('click', function() {
+            ann.style.display = 'none';
+            localStorage.setItem('announcement_closed', today);
+        });
+    })();
+
+    // ========== 主题切换 ==========
+    const themes = ['theme-neon', 'theme-dark', 'theme-white'];
+    const themeNames = ['🎨 霓虹主题', '🌙 黑色主题', '☀️ 白色主题'];
+    let currentThemeIndex = 0;
+
+    function setTheme(index) {
+        document.body.classList.remove('theme-neon', 'theme-dark', 'theme-white');
+        document.body.classList.add(themes[index]);
+        document.getElementById('themeToggle').textContent = themeNames[index];
+        localStorage.setItem('preferredTheme', themes[index]);
+        currentThemeIndex = index;
+    }
+
+    const savedTheme = localStorage.getItem('preferredTheme');
+    if (savedTheme) {
+        const idx = themes.indexOf(savedTheme);
+        if (idx !== -1) setTheme(idx);
+        else setTheme(0);
+    } else setTheme(0);
+
+    document.getElementById('themeToggle').addEventListener('click', function() {
+        setTheme((currentThemeIndex + 1) % themes.length);
+    });
+
+    // ========== 语言切换 ==========
+    function switchLang(langType) {
+        document.querySelectorAll('.cn').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.tw').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.en').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.' + langType).forEach(el => el.style.display = 'block');
+        localStorage.setItem('preferredLang', langType);
+    }
+    const langSelect = document.getElementById('langSelect');
+    const savedLang = localStorage.getItem('preferredLang') || 'cn';
+    langSelect.value = savedLang;
+    switchLang(savedLang);
+    langSelect.addEventListener('change', function() { switchLang(this.value); });
+
+    // ========== 导航折叠与滚动隐藏 ==========
+    const navWrapper = document.getElementById('navWrapper');
+    const mainNav = document.getElementById('mainNav');
+    const navToggle = document.getElementById('navToggle');
+    navToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        mainNav.classList.toggle('collapsed');
+        navToggle.textContent = mainNav.classList.contains('collapsed') ? '▶ 展开导航' : '▼ 导航菜单';
+    });
+
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+
+    window.addEventListener('scroll', function() {
+        if (!ticking) {
+            window.requestAnimationFrame(function() {
+                const currentScrollY = window.scrollY;
+                if (currentScrollY > 80 && currentScrollY > lastScrollY) {
+                    navWrapper.classList.add('hide-nav');
+                } else if (currentScrollY < lastScrollY || currentScrollY <= 80) {
+                    navWrapper.classList.remove('hide-nav');
+                }
+                lastScrollY = currentScrollY;
+                const topBtn = document.getElementById('topBtn');
+                if (currentScrollY > 300) topBtn.classList.add('show');
+                else topBtn.classList.remove('show');
+                updateProgress();
+                highlightToc();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+
+    // ========== 鼠标光影 ==========
+    const glow = document.getElementById('glow');
+    document.addEventListener('mousemove', function(e) {
+        if (document.body.classList.contains('theme-white')) {
+            glow.style.display = 'none';
+            return;
+        }
+        glow.style.display = 'block';
+        glow.style.left = e.clientX + 'px';
+        glow.style.top = e.clientY + 'px';
+    });
+    document.addEventListener('mouseleave', function() { glow.style.display = 'none'; });
+
+    // ========== 波纹特效 ==========
+    document.querySelectorAll('.box, .img-item, .video-box').forEach(item => {
+        item.addEventListener('click', function(e) {
+            let x = e.clientX - this.getBoundingClientRect().left;
+            let y = e.clientY - this.getBoundingClientRect().top;
+            let ripple = document.createElement('span');
+            ripple.className = 'ripple';
+            let size = Math.max(this.offsetWidth, this.offsetHeight);
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x - size/2 + 'px';
+            ripple.style.top = y - size/2 + 'px';
+            this.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        });
+    });
+
+    const styleSheet = document.createElement('style');
+    styleSheet.textContent = `
+        .ripple{
+            position:absolute;
+            border-radius:50%;
+            background:rgba(0,200,255,0.35);
+            animation:rippleAnim 0.6s linear forwards;
+            pointer-events:none;
+        }
+        @keyframes rippleAnim{
+            0%{transform:scale(0);opacity:1}
+            100%{transform:scale(3);opacity:0}
+        }
+        body.theme-white .ripple{background:rgba(10,90,138,0.2);}
+        body.theme-dark .ripple{background:rgba(0,200,255,0.2);}
+    `;
+    document.head.appendChild(styleSheet);
+
+    // ========== 图片弹窗 ==========
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImg');
+    const previewMsg = document.getElementById('previewMsg');
+    const modalClose = document.getElementById('modalClose');
+    document.querySelectorAll('.img-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const text = this.textContent.trim() || '图片';
+            modalImg.style.display = 'none';
+            previewMsg.textContent = '📷 ' + text + ' (图片待上传)';
+            modal.classList.add('active');
+        });
+    });
+    modalClose.addEventListener('click', function() { modal.classList.remove('active'); });
+    modal.addEventListener('click', function(e) { if (e.target === modal) modal.classList.remove('active'); });
+
+    // ========== 点赞系统 ==========
+    document.querySelectorAll('.like-btn').forEach(btn => {
+        const key = btn.dataset.like;
+        let count = parseInt(localStorage.getItem('like_'+key)) || 0;
+        btn.querySelector('.like-count').textContent = count;
+        if (localStorage.getItem('liked_'+key) === 'true') {
+            btn.classList.add('liked');
+        }
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const key2 = this.dataset.like;
+            let cnt = parseInt(localStorage.getItem('like_'+key2)) || 0;
+            const liked = localStorage.getItem('liked_'+key2) === 'true';
+            if (!liked) {
+                cnt++;
+                localStorage.setItem('like_'+key2, cnt);
+                localStorage.setItem('liked_'+key2, 'true');
+                this.classList.add('liked');
+            } else {
+                cnt--;
+                localStorage.setItem('like_'+key2, cnt);
+                localStorage.setItem('liked_'+key2, 'false');
+                this.classList.remove('liked');
+            }
+            this.querySelector('.like-count').textContent = cnt;
+        });
+    });
+
+    // ========== 对比模式 ==========
+    const compareToggle = document.querySelector('.compare-toggle');
+    const comparePanel = document.getElementById('comparePanel');
+    if (compareToggle) {
+        compareToggle.addEventListener('click', function() {
+            comparePanel.classList.toggle('show');
+            this.classList.toggle('active');
+            this.textContent = comparePanel.classList.contains('show') ? '🔒 关闭对比' : '🔁 对比模式';
+        });
+    }
+
+    // ========== 转换工具 ==========
+    function convertFuel() {
+        const val = parseFloat(document.getElementById('fuelInput').value);
+        const from = document.getElementById('fuelFrom').value;
+        const result = document.getElementById('fuelResult');
+        if (isNaN(val) || val <= 0) { result.textContent = '--'; return; }
+        if (from === 'l100') {
+            const mpg = 235.214 / val;
+            result.textContent = mpg.toFixed(1) + ' MPG';
+        } else {
+            const l100 = 235.214 / val;
+            result.textContent = l100.toFixed(1) + ' L/100km';
+        }
+    }
+    function convertSpeed() {
+        const val = parseFloat(document.getElementById('speedInput').value);
+        const from = document.getElementById('speedFrom').value;
+        const result = document.getElementById('speedResult');
+        if (isNaN(val) || val < 0) { result.textContent = '--'; return; }
+        if (from === 'kmh') {
+            result.textContent = (val * 0.621371).toFixed(1) + ' mph';
+        } else {
+            result.textContent = (val / 0.621371).toFixed(1) + ' km/h';
+        }
+    }
+    document.getElementById('fuelInput').addEventListener('input', convertFuel);
+    document.getElementById('fuelFrom').addEventListener('change', convertFuel);
+    document.getElementById('speedInput').addEventListener('input', convertSpeed);
+    document.getElementById('speedFrom').addEventListener('change', convertSpeed);
+    convertFuel(); convertSpeed();
+
+    // ========== 侧边目录 ==========
+    const sections = document.querySelectorAll('.box');
+    const toc = document.getElementById('sideToc');
+    sections.forEach(box => {
+        const id = box.id;
+        if (!id) return;
+        const titleEl = box.querySelector('.title');
+        if (!titleEl) return;
+        let label = titleEl.textContent.trim().slice(0,10);
+        if (label.length > 8) label += '..';
+        const a = document.createElement('a');
+        a.href = '#' + id;
+        a.dataset.section = id;
+        a.innerHTML = '<span class="toc-label">'+label+'</span>';
+        toc.appendChild(a);
+    });
+
+    function highlightToc() {
+        const scrollY = window.scrollY + 120;
+        let activeId = null;
+        sections.forEach(box => {
+            const rect = box.getBoundingClientRect();
+            if (rect.top <= 120) {
+                activeId = box.id;
+            }
+        });
+        toc.querySelectorAll('a').forEach(a => {
+            a.classList.toggle('active', a.dataset.section === activeId);
+        });
+    }
+    highlightToc();
+
+    // ========== 阅读进度环 ==========
+    function updateProgress() {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docHeight > 0 ? (scrollTop / docHeight) : 0;
+        const circle = document.getElementById('progressCircle');
+        const circumference = 138.23;
+        const offset = circumference * (1 - progress);
+        circle.style.strokeDashoffset = offset;
+    }
+    updateProgress();
+
+    console.log('✅ 完整网站已加载，包含知名车手与改装品牌模块！');
 </script>
 </body>
 </html>
