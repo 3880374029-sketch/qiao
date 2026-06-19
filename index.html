@@ -1,6 +1,25 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+    .img-box {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  flex-wrap: wrap;
+}
+.img-item {
+  width: 220px;
+  height: 320px;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: 0.3s ease;
+  cursor: pointer;
+}
+.img-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+}
+
 .img-box{display:flex;gap:16px;padding:20px;flex-wrap:wrap;}
 .img-item{width:220px;height:320px;border-radius:12px;overflow:hidden;transition:0.3s;cursor:pointer;}
 .img-item:hover{transform:translateY(-8px);box-shadow:0 12px 30px #0003;}
